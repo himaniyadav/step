@@ -30,13 +30,23 @@ function addRandomGreeting() {
 /*
  * Add a random fact about me to the about section of main page.
  */
+let randomFact = 0;
 function addRandomFact() {
   const factoids =
-      ['I\'ve never been stung by a bee 🐝', 'I love choir! I sing Alto 🎶', 'My dream vacation is Bali 🌴', 'I used to run a book blog! 📚',
-       'My favorite color is purple 💜' , 'My favorite composer is Debussy 🎹'];
+    ['I\'ve never been stung by a bee 🐝', 'I love choir! I sing Alto 🎶', 'My dream vacation is Bali 🌴', 'I used to run a book blog! 📚',
+     'My favorite color is purple 💜' , 'My favorite composer is Debussy 🎹'];
 
   // Pick a random fact.
-  const factoid = factoids[Math.floor(Math.random() * factoids.length)];
+  const index = Math.floor(Math.random() * factoids.length);
+
+  // Get a different index than last time.
+  if (index == randomFact) {
+      index++;
+  }
+  randomFact = index % factoids.length;
+
+  // Make sure the index doesn't overflow.
+  const factoid = factoids[index % factoids.length];
 
   // Add it to the page.
   const factContainer = document.getElementById('fact-container');
@@ -46,8 +56,8 @@ function addRandomFact() {
 /*
  * Display caption text when user clicks on image in the gallery.
  */
-function showCaption(id) {
-  var caption = document.getElementById("myCaption"+ id.toString());
+function showCaption(element) {
+  var caption = element.querySelector("span");
   caption.style.visibility = 
         (caption.style.visibility == "hidden" || caption.style.visibility == '') ? "visible" : "hidden";
 }
