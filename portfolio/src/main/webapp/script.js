@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
+/*
+ * Add a random greeting to the intro section of main page.
  */
 function addRandomGreeting() {
   const greetings =
@@ -27,8 +27,8 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-/**
- * Adds a random fact about me to the page.
+/*
+ * Add a random fact about me to the about section of main page.
  */
 function addRandomFact() {
   const factoids =
@@ -41,4 +41,13 @@ function addRandomFact() {
   // Add it to the page.
   const factContainer = document.getElementById('fact-container');
   factContainer.innerText = factoid;
+}
+
+/*
+ * Display caption text when user clicks on image in the gallery.
+ */
+function showCaption() {
+  var caption = document.getElementById("myCaption");
+  caption.style.visibility = 
+        (caption.style.visibility == "hidden" || caption.style.visibility == '') ? "visible" : "hidden";
 }
