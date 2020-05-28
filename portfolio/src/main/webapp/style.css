@@ -49,7 +49,7 @@ h1 {
   font-size: 90px; 
   font-style: bold;
   font-weight: 700; 
-  line-height: 26.4px; 
+  line-height: 90px; 
 } 
 
 h2 {
@@ -94,6 +94,16 @@ button {
   font-variant: normal; 
   font-weight: 400; 
   padding: 0.25rem 0.25rem;
+}
+
+@media screen and (max-width: 950px) {
+  h1 {
+    font-family: 'Poppins';
+    font-size: 60px; 
+    font-style: bold;
+    font-weight: 700; 
+    line-height: 60px; 
+  }
 }
 
 /* Style the header section */
@@ -263,9 +273,20 @@ nav a:hover {
 }
 
 .image-container img {
-  object-fit: cover;
   height: 100%;
+  object-fit: cover;
   width: 100%; 
+}
+
+.image-container button {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  object-fit: cover;
+  outline: none;
+  overflow: hidden;   
 }
 
 /* Styling and settings for image caption display */
@@ -281,8 +302,6 @@ nav a:hover {
 
 /* Styling image caption appearance */
 .caption {
-  animation: fadeIn 1s;
-  -webkit-animation: fadeIn 1s;
   background-color: rgba(32, 32, 32, 0.616);
   border-radius: 6px;
   bottom: 2%;
