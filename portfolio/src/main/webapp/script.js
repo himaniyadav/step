@@ -46,8 +46,8 @@ function addRandomFact() {
 /*
  * Display caption text when user clicks on image in the gallery.
  */
-function showCaption() {
-  var caption = document.getElementById("myCaption");
+function showCaption(id) {
+  var caption = document.getElementById("myCaption"+ id.toString());
   caption.style.visibility = 
         (caption.style.visibility == "hidden" || caption.style.visibility == '') ? "visible" : "hidden";
 }
