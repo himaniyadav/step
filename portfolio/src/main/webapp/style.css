@@ -61,12 +61,17 @@ h2 {
 }
 
 h3 { 
+  cursor: pointer;
   font-family: 'Montserrat'; 
   font-size: 24px; 
   font-style: normal; 
   font-variant: small-caps; 
   font-weight: 400;  
   margin: 0px;
+}
+
+h3:hover {
+  color: rgb(255, 221, 219);
 }
 
 p {
@@ -77,6 +82,19 @@ p {
   font-weight: 400; 
 }
 
+button {
+  background: rgb(255, 167, 163);
+  border: 0;
+  border-radius: 0.25rem;
+  color: white;
+  cursor: pointer;
+  font-family: 'Montserrat'; 
+  font-size: 1rem; 
+  font-style: bold; 
+  font-variant: normal; 
+  font-weight: 400; 
+  padding: 0.25rem 0.25rem;
+}
 
 /* Style the header section */
 
@@ -91,6 +109,7 @@ p {
   position: fixed; 
   top: 0; 
   width: 100%; 
+  z-index: 99;
 }
 
 nav {
@@ -113,11 +132,6 @@ nav a {
 
 nav a:hover {
     color: rgb(255, 221, 219);
-}
-
-nav a:active {
-    background-color: rgb(235, 200, 186);
-    color: white;
 }
 
 /* Style the introduction section */
@@ -198,6 +212,7 @@ nav a:active {
 }
 
 /* Set up the content area grid for the gallery page */
+
 .gallery-content {
   display: grid;
   grid-template-rows: 55px auto 270px;
@@ -214,7 +229,7 @@ nav a:active {
   background-color: rgb(255, 245, 242);
   color: hsl(240, 3%, 14%);
   grid-area: gallery-area;
-  padding: 10px 150px 30px;
+  padding: 20px 150px 30px;
 }
 
 .gallery-area #pagename {
@@ -222,16 +237,19 @@ nav a:active {
   font-size: 50px; 
   font-style: bold;
   font-weight: 700; 
-  padding: 50px 0;
+  padding: 30px 0;
 }
 
 @media screen and (max-width: 1200px) {
+  .gallery-area {
+      padding: 20px 50px 30px;
+  }
   .gallery-area #pagename {
     font-family: 'Poppins';
     font-size: 30px; 
     font-style: bold;
     font-weight: 700; 
-    padding: 40px 0 5px;
+    padding: 30px 0 5px;
   }
 }
 
@@ -248,4 +266,33 @@ nav a:active {
   object-fit: cover;
   height: 100%;
   width: 100%; 
+}
+
+/* Styling and settings for image caption display */
+.image-container .image {
+  cursor: pointer;
+  position: relative; 
+  text-align: center;
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Styling image caption appearance */
+.caption {
+  animation: fadeIn 1s;
+  -webkit-animation: fadeIn 1s;
+  background-color: rgba(32, 32, 32, 0.616);
+  border-radius: 6px;
+  bottom: 2%;
+  color: white;
+  font-family: 'Montserrat';
+  left: 2%;
+  padding: 8px 8px;
+  position: absolute;
+  right: 2%;
+  text-align: center;
+  visibility: hidden;
+  z-index: 1;
 }
