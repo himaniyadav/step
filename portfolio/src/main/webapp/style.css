@@ -308,10 +308,17 @@ nav a:hover {
   color: white;
   font-family: 'Montserrat';
   left: 2%;
+  opacity: 0;
   padding: 8px 8px;
   position: absolute;
   right: 2%;
   text-align: center;
-  visibility: hidden;
+  transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -webkit-transition: opacity 1s ease-in-out;
   z-index: 1;
+}
+
+.caption.show-caption {
+  opacity: 1;
 }

@@ -58,6 +58,5 @@ function addRandomFact() {
  */
 function showCaption(element) {
   var caption = element.querySelector("span");
-  caption.style.visibility = 
-        (caption.style.visibility == "hidden" || caption.style.visibility == '') ? "visible" : "hidden";
+  caption.classList.toggle("show-caption");
 }
