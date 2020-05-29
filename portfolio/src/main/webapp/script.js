@@ -59,4 +59,5 @@ function addRandomFact() {
 function showCaption(element) {
   var caption = element.querySelector("span");
   caption.classList.toggle("show-caption");
+  caption.focus();
 }
