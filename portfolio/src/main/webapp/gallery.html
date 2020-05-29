@@ -8,7 +8,7 @@
     <script src="script.js"></script>
   </head>
   <body>
-    <div class="content">
+    <div class="gallery-content">
       <div class="header">
         <nav>
           <a href="index.html">Home</a>
@@ -19,11 +19,115 @@
         </nav>
       </div>
 
-      <h1 id="pagename">Himani's Image Gallery</h1>
-
-      <div class="images">
-          <!-- TODO: Add images here -->
+      <div class="gallery-area">
+        <h1 id="pagename">Himani's Image Gallery</h1>
+        <p>I love to travel! Click on an image below to see a description.</p>
+        <div class="image-container">
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/quad.jpg" alt="Myers Quad">
+            <span class="caption">This is Myers Quad, my favorite part of campus. 
+                I found this gorgeous sunset view outside Myers Hall (my dorm for my first two years at UGA).
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/ga-mountains.jpg" alt="Yonah Mountain in Georgia">
+            <span class="caption">The gentle scenery of Blue Ridge Mountains in north Georgia is 
+                so pretty. It's a five mile hike up Mt. Yonah, but this view was worth it.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/scili-sunset.jpg" alt="Outside UGA Sci Li">
+            <span class="caption">I spend an upsetting amount of time studying at UGA's science 
+                library (aka sci li). While I wanted to enjoy this gorgeous spring sunset, I had to go back and study :(.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/savannah.jpg" alt="Beach in Savannah">
+            <span class="caption">This winter break, I went on a service trip to Savannah, Georgia, 
+                helping with resource and shelter access. After a long day of service, we were treated to pretty sunset views by the beach.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/oxford.jpg" alt="Oxford, England">
+            <span class="caption">Last May, I got to study abroad in Oxford, England. I miss everything 
+                about it!
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/arthur.jpg" alt="Arthur's Tomb">
+            <span class="caption">While studying abroad in Oxford, we took a weekend excursion to Cornwall. 
+                On the way, we stopped at Glastonbury Abbey to see King Arthur's tomb.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/cornwall.jpeg" alt="Coast in Cornwall">
+            <span class="caption">The Cornish coastline has to be one of the most gorgeous, peaceful places 
+                I've ever been to. We took a (literally) breathtaking 5 mile hike along the coast.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/paris.jpg" alt="Eiffel Tower">
+            <span class="caption">After 30 minutes of walking and searching to no avail, my friends and I 
+                were treated to this amazing view of the Eiffel Tower right as we turned the corner onto this side street.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/thinker.jpg" alt="The Thinker">
+            <span class="caption">Doing some serious thinking at the Rodin Museum.</span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/paris-balloon.jpg" alt="Balloons in Paris">
+            <span class="caption">Pretty balloons at an outdoor market in Paris.</span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/sitges.jpg" alt="Sitges, Spain">
+            <span class="caption">Sitges, Spain is such a fun place to stay outside Barcelona. 
+                Unfortunately, it was a 40 minute hike up and down the mountain to get to town and the beach from our AirBnB.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/flowers.jpg" alt="Flower Market">
+            <span class="caption">I was disappointed to find that Amsterdam's famous floating flower markets 
+                are hardly actually floating, but the flowers were pretty nonetheless.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/amsterdam-church.jpeg" alt="Basilica in Amsterdam">
+            <span class="caption">I loved this view of the Basilica reflecting off of the canals in the middle
+                of Amsterdam at sunset.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/london-eye.jpg" alt="London Eye">
+            <span class="caption">When interning in London last summer, I got to take walks along the Thames
+                everyday to work. The London Eye was just a short walk from my AirBnB as well.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/st-pauls.jpg" alt="St. Paul's Cathedral in London">
+            <span class="caption">In England, I visited a lot of churches to hear the evensong choral services. 
+                The architechture inside St. Paul's Cathedral in London was one of my favorites.
+            </span>
+          </div>
+          <div class="image" onclick="showCaption(this)">
+            <img src="/images/gallery/met.jpg" alt="Met in NYC">
+            <span class="caption">Lived out my Gossip Girl dreams when I saw the Met steps in person in NYC over 
+                spring break last year.</span>
+          </div>
+        </div>
       </div>
+
+      <div class="footer">
+        <h2>Get in touch.<br/>
+          <p><a href="mailto:himaniyadav@gmail.com" target="_blank">himaniyadav@gmail.com</a> <br/>
+            (404)-697-8171</p>
+          <span class="social">
+            <a href="https://www.linkedin.com/in/himaniyadav" target="_blank"><img src="/images/linkedin.svg" class="icon" alt="linkedin logo"></a>
+            <a href="https://github.com/himaniyadav" target="_blank"><img src="/images/github.svg" class="icon" alt="github logo"></a>
+          </span><br/><br/>
+          <p><a href="#top">back to top</a></p>
+        </h2>
+      </div>            
     </div>
   </body>
 </html>
