@@ -2,12 +2,13 @@
 
 .content {
   display: grid;
-  grid-template-rows: 55px 900px auto 270px;
+  grid-template-rows: 55px 900px auto auto 270px;
   grid-template-columns: auto;
   grid-template-areas:
     "header"
     "intro"
     "about"
+    "experiences"
     "footer";
 }
 
@@ -33,12 +34,12 @@ html {
 /* Style the text selection color */
  
 ::selection {
-    background: rgba(230, 175, 184, .822);
+    background: rgba(255, 192, 115, 0.815);
     color: rgb(80, 80, 80); 
 }
 
 ::-moz-selection { 
-    background: rgba(230, 175, 184, .822);
+    background: rgba(255, 191, 115, 0.815);
     color: rgb(80, 80, 80);
 }
 
@@ -70,10 +71,6 @@ h3 {
   margin: 0px;
 }
 
-h3:hover {
-  color: rgb(255, 221, 219);
-}
-
 p {
   font-family: 'Montserrat'; 
   font-size: 15px; 
@@ -83,7 +80,7 @@ p {
 }
 
 button {
-  background: rgb(255, 167, 163);
+  background: #413F55;
   border: 0;
   border-radius: 0.25rem;
   color: white;
@@ -93,7 +90,7 @@ button {
   font-style: bold; 
   font-variant: normal; 
   font-weight: 400; 
-  padding: 0.25rem 0.25rem;
+  padding: 0.45rem 0.45rem;
 }
 
 @media screen and (max-width: 950px) {
@@ -109,7 +106,7 @@ button {
 /* Style the header section */
 
 .header { 
-  background-color: rgb(255, 177, 104);
+  background-color: rgb(123, 129, 185);
   box-shadow: 0px 5px 39px 2px rgba(69,69,69,0.71);
   -moz-box-shadow: 0px 5px 39px 2px rgba(69,69,69,0.71);
   -webkit-box-shadow: 0px 5px 39px 2px rgba(69,69,69,0.71);
@@ -122,9 +119,19 @@ button {
   z-index: 99;
 }
 
+.header p {
+  float: left;
+  font-family: 'Poppins'; 
+  font-size: 24px;  
+  font-style: bold;
+  font-weight: 700; 
+  margin: 20px 150px 0;
+}
+
 nav {
   float: right;
-  margin: 20px 100px 0;
+  margin: 20px 150px 0;
+  text-align: center;
 }
 
 /* Style the links inside the navigation bar */
@@ -162,11 +169,14 @@ nav a:hover {
 .intro h3 {
   font-size: 30px;
 }
+.intro h3:hover {
+  color: rgb(255, 221, 219);
+}
 
 /* Style the about section */
 
 .about {
-  background-color: rgb(255, 245, 242);
+  background-color: #D5CDCB;
   color: hsl(240, 3%, 14%);
   grid-area: about;
   padding: 30px 150px 50px;
@@ -180,10 +190,44 @@ nav a:hover {
   width: 300px;
 }
 
+/* Style the experiences section */
+
+.experiences {
+  background-color: rgb(245, 245, 245);
+  color: hsl(240, 3%, 14%);
+  grid-area: experiences;
+  padding: 30px 150px 50px;
+}
+
+.experiences a {
+  color: #413F55;
+  cursor: pointer;
+  font-family: 'Montserrat'; 
+  font-size: 24px; 
+  font-style: normal; 
+  font-variant: small-caps; 
+  font-weight: 400;  
+  margin: 0px;
+  text-decoration: none;
+}
+
+.experiences img {
+  border-radius: 40px;
+  float: left;
+  height: 200px;
+  margin: 20px 50px;
+  object-fit: cover;
+  overflow: hidden;
+  width: 300px;
+}
+
 /* Style the footer/contact section */
 
 .footer {
-  background-color: rgb(255, 177, 104);
+  background-color: rgb(123, 129, 185);
+  box-shadow: 0px 5px 39px 2px rgba(69,69,69,0.71);
+  -moz-box-shadow: 0px 5px 39px 2px rgba(69,69,69,0.71);
+  -webkit-box-shadow: 0px 5px 39px 2px rgba(69,69,69,0.71);
   color: white;
   grid-area: footer;
   padding: 15px 150px 0;
@@ -236,7 +280,7 @@ nav a:hover {
 /* Style the gallery page */
 
 .gallery-area {
-  background-color: rgb(255, 245, 242);
+  background-color: rgb(245, 245, 245);
   color: hsl(240, 3%, 14%);
   grid-area: gallery-area;
   padding: 20px 150px 30px;
@@ -259,13 +303,13 @@ nav a:hover {
     font-size: 30px; 
     font-style: bold;
     font-weight: 700; 
-    padding: 30px 0 5px;
+    padding: 5px 0;
   }
 }
 
 /* Set up the image grid in the gallery page */
 .image-container {
-  background-color: rgb(255, 245, 242);
+  background-color: rgb(245, 245, 245);
   display: grid;
   grid-auto-flow: dense;
   gap: 15px;
