@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Himani's Image Gallery</title>
+    <title>Travel Gallery</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Poppins">
     <script src="script.js"></script>
@@ -10,17 +10,18 @@
   <body>
     <div class="gallery-content">
       <div class="header">
+        <p>Himani Yadav.</p>
         <nav>
           <a href="index.html">Home</a>
           <a href="index.html#about">About</a>
           <a href="gallery.html">Gallery</a>
-          <a href="step.html">STEP</a>
-          <a href="index.html#footer">Contact</a>
+          <a href="index.html#experiences">Activities</a>
+          <a href="#footer">Contact</a>
         </nav>
       </div>
 
       <div class="gallery-area">
-        <h1 id="pagename">Himani's Image Gallery</h1>
+        <h1 id="pagename">Travel Gallery</h1>
         <p>I love to travel! Click on an image below to see a description.</p>
         <div class="image-container">
           <div class="image" onclick="showCaption(this)" aria-role="button" tabindex="0" aria-label="Show caption">
@@ -117,15 +118,14 @@
         </div>
       </div>
 
-      <div class="footer">
-        <h2>Get in touch.<br/>
-          <p><a href="mailto:himaniyadav@gmail.com" target="_blank">himaniyadav@gmail.com</a> <br/>
-            (404)-697-8171</p>
+      <div class="footer" id="footer">
+        <h2>Get in touch.<br/><br/>
           <span class="social">
             <a href="https://www.linkedin.com/in/himaniyadav" target="_blank"><img src="/images/linkedin.svg" class="icon" alt="linkedin logo"></a>
             <a href="https://github.com/himaniyadav" target="_blank"><img src="/images/github.svg" class="icon" alt="github logo"></a>
-          </span><br/><br/>
-          <p><a href="#top">back to top</a></p>
+            <a href="mailto:himaniyadav@gmail.com" target="_blank"><img src="/images/mail.svg" class="icon" alt="email logo"></a> <br/>
+          </span>
+          <p id="back"><a href="#top">back to top</a></p>
         </h2>
       </div>            
     </div>

@@ -2,7 +2,7 @@
 
 .content {
   display: grid;
-  grid-template-rows: 55px 900px auto auto 270px;
+  grid-template-rows: 55px 900px auto auto 240px;
   grid-template-columns: auto;
   grid-template-areas:
     "header"
@@ -58,7 +58,7 @@ h2 {
   font-size: 24px;  
   font-variant: normal;  
   font-weight: 400;
-  line-height: 23px; 
+  line-height: 24px; 
 }
 
 h3 { 
@@ -93,16 +93,6 @@ button {
   padding: 0.45rem 0.45rem;
 }
 
-@media screen and (max-width: 950px) {
-  h1 {
-    font-family: 'Poppins';
-    font-size: 60px; 
-    font-style: bold;
-    font-weight: 700; 
-    line-height: 60px; 
-  }
-}
-
 /* Style the header section */
 
 .header { 
@@ -115,8 +105,21 @@ button {
   overflow: hidden;
   position: fixed; 
   top: 0; 
+  transition: all 0.4s ease;
+  -webkit-transition: all 0.4s ease;
   width: 100%; 
   z-index: 99;
+}
+
+.header.transparent {
+  background: url(/images/tybee.jpg) no-repeat center center fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-color: Transparent;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
 }
 
 .header p {
@@ -125,12 +128,12 @@ button {
   font-size: 24px;  
   font-style: bold;
   font-weight: 700; 
-  margin: 20px 150px 0;
+  margin: 20px 10px 0 150px;
 }
 
 nav {
   float: right;
-  margin: 20px 150px 0;
+  margin: 20px 150px 0 10px;
   text-align: center;
 }
 
@@ -151,6 +154,20 @@ nav a:hover {
     color: rgb(255, 221, 219);
 }
 
+@media screen and (max-width: 1000px) {
+  nav {
+    float: none;
+    margin: 20px 50px 0 50px;
+  }
+
+  nav a {
+    font-size: 12px;
+    font-weight: 300; 
+    padding: 0 12px 20px;
+    text-align: center;
+  }
+}
+
 /* Style the introduction section */
 
 .intro { 
@@ -162,15 +179,29 @@ nav a:hover {
   grid-area: intro; 
   padding: 200px 150px 0 150px;
   text-align: left;
+  top: 0;
 }
+
 .intro h2 {
   font-style: italic;
 }
+
 .intro h3 {
   font-size: 30px;
 }
+
 .intro h3:hover {
   color: rgb(255, 221, 219);
+}
+
+@media screen and (max-width: 950px) {
+  .intro h1 {
+    font-family: 'Poppins';
+    font-size: 60px; 
+    font-style: bold;
+    font-weight: 700; 
+    line-height: 60px; 
+  }
 }
 
 /* Style the about section */
@@ -181,6 +212,11 @@ nav a:hover {
   grid-area: about;
   padding: 30px 150px 50px;
   vertical-align: middle;
+}
+
+.about h2 {
+  margin-top: -200px;
+  padding: 230px 0 15px;
 }
 
 .about img {
@@ -199,6 +235,11 @@ nav a:hover {
   padding: 30px 150px 50px;
 }
 
+.experiences h2 {
+  margin-top: -200px;
+  padding-top: 230px;
+}
+
 .experiences a {
   color: #413F55;
   cursor: pointer;
@@ -207,7 +248,7 @@ nav a:hover {
   font-style: normal; 
   font-variant: small-caps; 
   font-weight: 400;  
-  margin: 0px;
+  margin: 30px 0;
   text-decoration: none;
 }
 
@@ -215,10 +256,36 @@ nav a:hover {
   border-radius: 40px;
   float: left;
   height: 200px;
-  margin: 20px 50px;
+  margin: 20px 20px 20px 20px;
   object-fit: cover;
   overflow: hidden;
   width: 300px;
+}
+
+.experiences p {
+  margin-bottom: 50px;
+}
+
+.clearfix {
+  clear:both;
+}
+
+@media screen and (min-width: 1200px) {
+  padding: 30px 300px 50px 250px;
+}
+
+@media screen and (max-width: 1000px) {
+  .experiences img {
+    float: none;
+  }
+
+  .experiences a {
+    text-align: center;
+  }
+
+  .experiences p {
+    text-align: center;
+  }
 }
 
 /* Style the footer/contact section */
@@ -246,6 +313,10 @@ nav a:hover {
   color: rgb(255, 221, 219);
 }
 
+.footer #back {
+  text-align: right, bottom;
+}
+
 .footer .social a {
   color: white;
   font-size: 25px; 
@@ -253,6 +324,12 @@ nav a:hover {
   padding: 3px 3px 15px;
   text-align: center;
   text-decoration: none;
+}
+
+@media screen and (max-width: 600px) {
+  .footer {
+    padding: 15px 50px 0;
+  }
 }
 
 /* Style the social media icons */
@@ -265,11 +342,15 @@ nav a:hover {
   opacity: 0.7;
 }
 
+.icon {
+    padding: 10px 5px;
+}
+
 /* Set up the content area grid for the gallery page */
 
 .gallery-content {
   display: grid;
-  grid-template-rows: 55px auto 270px;
+  grid-template-rows: 55px auto 240px;
   grid-template-columns: auto;
   grid-template-areas:
     "header"
@@ -283,7 +364,7 @@ nav a:hover {
   background-color: rgb(245, 245, 245);
   color: hsl(240, 3%, 14%);
   grid-area: gallery-area;
-  padding: 20px 150px 30px;
+  padding: 20px 150px 20px;
 }
 
 .gallery-area #pagename {
@@ -291,19 +372,21 @@ nav a:hover {
   font-size: 50px; 
   font-style: bold;
   font-weight: 700; 
+  line-height: 50px;
+  margin: 0;
   padding: 30px 0;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1000px) {
   .gallery-area {
-      padding: 20px 50px 30px;
+      padding: 50px 50px 20px;
   }
   .gallery-area #pagename {
     font-family: 'Poppins';
     font-size: 30px; 
     font-style: bold;
-    font-weight: 700; 
-    padding: 5px 0;
+    font-weight: 700;
+    line-height: 30px;
   }
 }
 
