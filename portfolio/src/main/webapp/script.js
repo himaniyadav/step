@@ -72,3 +72,14 @@ function showCaption(element) {
   caption.classList.toggle("show-caption");
   caption.focus();
 }
+
+/*
+ * Fetch data from the data servlet to display on main page.
+ */
+function getServerMessage() {
+  fetch('/data')
+  .then(response => response.text())
+  .then((message) => {
+    document.getElementById('message-container').innerText = message;
+  });
+}
