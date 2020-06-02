@@ -80,9 +80,9 @@ function getComments() {
   fetch('/data')
   .then(response => response.json())
   .then((comments) => {
-    console.log(comments);
     // comments is an array of json objects
     const commentsElement = document.getElementById('comments-container');
+    // TO DO: try to fix this to append new comments instead of erasing and rewriting them each time.
     commentsElement.innerHTML = '';
     for (i in comments) {
       commentsElement.appendChild(
