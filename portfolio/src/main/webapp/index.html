@@ -107,10 +107,27 @@
               sparked my interest in tech. And the various service organizations I participated in and led brought me a 
               greater understanding of the issues pervasive in my community, and what I could do to help.
           </p>
-          <div class="clearfix"></div>
-          <!-- TO DO: Styling. And move comments to its own section in the grid, not within activities -->
-          <h2>Comments:</h2>
-          <div id="comments-container"></div>
+          <div class="clearfix"></div>         
+      </div>
+    
+      <div class="comments">
+        <h2 id="comments">Comments</h2>
+        <form action="/data" method="POST">
+          <ul>
+            <li>
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name">
+            </li>
+            <li>
+              <label for="msg">Message:</label>
+              <textarea id="msg" name="message"></textarea>
+            </li>
+            <li class="button">
+              <button type="submit">Submit</button>
+            </li>
+            </ul>
+        </form>
+        <div id="comments-container">Be the first to leave a comment.</div>
       </div>
 
       <div class="footer" id="footer">
