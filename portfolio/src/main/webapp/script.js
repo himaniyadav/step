@@ -82,11 +82,16 @@ function getComments() {
   .then((comments) => {
     // comments is an array of json objects
     const commentsElement = document.getElementById('comments-container');
-    // TO DO: try to fix this to append new comments instead of erasing and rewriting them each time.
-    commentsElement.innerHTML = '';
-    for (i in comments) {
-      commentsElement.appendChild(
+
+    if (Object.keys(comments).length == 0) {
+        commentsElement.appendChild(createElement('Be the first to leave a comment.'));
+    } else {
+      // TO DO: try to fix this to append new comments instead of erasing and rewriting them each time.
+      commentsElement.innerHTML = '';
+      for (i in comments) {
+        commentsElement.appendChild(
         createElement('By: ' + comments[i].name + '\n Message: ' + comments[i].message));
+      }
     }
   });
 }
