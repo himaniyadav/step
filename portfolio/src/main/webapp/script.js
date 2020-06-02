@@ -91,9 +91,9 @@ function getComments() {
       for (i in comments) {
         const date = new Date(comments[i].timestamp);
         commentsElement.appendChild(
-        createElement('By: ' + comments[i].name + 
-                        '\nOn: ' + date.toLocaleDateString() +
-                        '\nMessage: ' + comments[i].message));
+        createElement(`By: ${comments[i].name}
+                       On: ${date.toLocaleDateString()}
+                       Message: ${comments[i].message}`));
       }
     }
   });
