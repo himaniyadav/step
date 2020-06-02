@@ -14,6 +14,10 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.Comment;
+import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +30,36 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("Hello Himani!");
+
+    // Create a list of hard-coded comments.
+    List<Comment> comments = new ArrayList<>();
+
+    addComment(comments, "Himani Yadav", "Wow, this is a great website :)");
+    addComment(comments, "Jon Snow", "I know nothing :)");
+    addComment(comments, "Arya Stark", "Winter is coming.");
+
+    // Convert the list of comments to JSON
+    String json = convertToJson(comments);
+
+    // Send the JSON as the response
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+
   }
+
+  /*
+   * Adds a comment to a list of comments.
+   */
+  private void addComment(List comments, String name, String message) {
+    Comment comment = new Comment(name, message);
+    comments.add(comment);
+  }
+
+  /*
+   * Converts a Comment list instance into a JSON string using the Gson library.
+   */
+  private String convertToJson(List comments) {
+    return new Gson().toJson(comments);
+  }
+
 }
