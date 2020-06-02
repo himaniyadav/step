@@ -27,24 +27,29 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  
+  List<Comment> comments = new ArrayList<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    // Create a list of hard-coded comments.
-    List<Comment> comments = new ArrayList<>();
-
-    addComment(comments, "Himani Yadav", "Wow, this is a great website :)");
-    addComment(comments, "Jon Snow", "I know nothing :)");
-    addComment(comments, "Arya Stark", "Winter is coming.");
-
     // Convert the list of comments to JSON
     String json = convertToJson(comments);
 
     // Send the JSON as the response
     response.setContentType("application/json;");
     response.getWriter().println(json);
+  }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String name = request.getParameter("name");
+    String message = request.getParameter("message");
+      
+    addComment(comments, name, message);
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/index.html#comments");
   }
 
   /*
