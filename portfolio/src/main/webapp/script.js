@@ -89,8 +89,11 @@ function getComments() {
       // TO DO: try to fix this to append new comments instead of erasing and rewriting them each time.
       commentsElement.innerHTML = '';
       for (i in comments) {
+        const date = new Date(comments[i].timestamp);
         commentsElement.appendChild(
-        createElement('By: ' + comments[i].name + '\n Message: ' + comments[i].message));
+        createElement('By: ' + comments[i].name + 
+                        '\nOn: ' + date.toLocaleDateString() +
+                        '\nMessage: ' + comments[i].message));
       }
     }
   });
