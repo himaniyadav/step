@@ -4,7 +4,6 @@ package com.google.sps.data;
 public final class Comment {
 
   private final String name;
-  //private final Date timePosted;
   private String message;
 
   public Comment(String name, String message) {
