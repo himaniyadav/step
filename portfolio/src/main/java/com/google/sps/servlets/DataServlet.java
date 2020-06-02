@@ -34,21 +34,9 @@ public class DataServlet extends HttpServlet {
     // Create a list of hard-coded comments.
     List<Comment> comments = new ArrayList<>();
 
-    String name1 = "Himani Yadav";
-    String message1 = "Wow, this is a great website :)";
-    Comment comment1 = new Comment(name1, message1);
-
-    String name2 = "Jon Snow";
-    String message2 = "I know nothing :)";
-    Comment comment2 = new Comment(name2, message2);
-    
-    String name3 = "Arya Stark";
-    String message3 = "Winter is coming.";
-    Comment comment3 = new Comment(name3, message3);
-
-    comments.add(comment1);
-    comments.add(comment2);
-    comments.add(comment3);
+    addComment(comments, "Himani Yadav", "Wow, this is a great website :)");
+    addComment(comments, "Jon Snow", "I know nothing :)");
+    addComment(comments, "Arya Stark", "Winter is coming.");
 
     // Convert the list of comments to JSON
     String json = convertToJson(comments);
@@ -59,7 +47,15 @@ public class DataServlet extends HttpServlet {
 
   }
 
-  /**
+  /*
+   * Adds a comment to a list of comments.
+   */
+  private void addComment(List comments, String name, String message) {
+    Comment comment = new Comment(name, message);
+    comments.add(comment);
+  }
+
+  /*
    * Converts a Comment instance into a JSON string using the Gson library.
    */
   private String convertToJson(List comments) {
@@ -67,4 +63,5 @@ public class DataServlet extends HttpServlet {
     String json = gson.toJson(comments);
     return json;
   }
+
 }
