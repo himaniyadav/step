@@ -74,12 +74,29 @@ function showCaption(element) {
 }
 
 /*
- * Fetch data from the data servlet to display on main page.
+ * Fetch comments data from the data servlet to display on main page.
  */
-function getServerMessage() {
+function getComments() {
   fetch('/data')
-  .then(response => response.text())
-  .then((message) => {
-    document.getElementById('message-container').innerText = message;
+  .then(response => response.json())
+  .then((comments) => {
+    console.log(comments);
+    // comments is an array of json objects
+    const commentsElement = document.getElementById('comments-container');
+    commentsElement.innerHTML = '';
+    for (i in comments) {
+      commentsElement.appendChild(
+        createElement('By: ' + comments[i].name + '\n Message: ' + comments[i].message));
+    }
   });
 }
+
+/* Creates a <p> element containing text for the comments. */
+function createElement(text) {
+  const element = document.createElement('p');
+  element.innerText = text;
+  return element;
+}
+
+/* Run the getComments() function when the page loads. */
+window.onload = getComments;
