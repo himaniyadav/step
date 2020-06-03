@@ -2,13 +2,14 @@
 
 .content {
   display: grid;
-  grid-template-rows: 55px 900px auto auto 240px;
+  grid-template-rows: 55px 900px auto auto auto 240px;
   grid-template-columns: auto;
   grid-template-areas:
     "header"
     "intro"
     "about"
     "experiences"
+    "comments"
     "footer";
 }
 
@@ -286,6 +287,71 @@ nav a:hover {
   .experiences p {
     text-align: center;
   }
+}
+
+/* Style the comments section */
+.comments {
+  background-color: rgb(245, 245, 245);
+  color: hsl(240, 3%, 14%);
+  grid-area: comments;
+  padding: 30px 150px 50px;
+}
+
+.comments h2 {
+  margin-top: -200px;
+  padding-top: 230px;
+}
+
+.comments form {
+  border: 1px solid #CCC;
+  border-radius: 1em;
+  margin: 0 150;
+  padding: 1em;
+  width: 400px;
+}
+
+.comments ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.comments form li + li {
+  margin-top: 1em;
+}
+
+.comments label {
+  display: inline-block;
+  font-family: Montserrat;
+  text-align: right;
+  width: 90px;
+}
+
+.comments input, 
+textarea {
+  border: 2px solid #dadada;
+  border-radius: 7px;
+  box-sizing: border-box;
+  font: 1em sans-serif;
+  width: 300px;
+}
+
+.comments input:focus, 
+textarea:focus {
+  border-color: hsl(240, 3%, 14%);
+}
+
+.comments textarea {
+  height: 5em;
+  vertical-align: top;
+}
+
+.comments .button {
+  padding-left: 90px;
+}
+
+.comments button {
+  margin-left: .5em;
 }
 
 /* Style the footer/contact section */
