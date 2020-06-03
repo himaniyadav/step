@@ -68,7 +68,7 @@ function addRandomFact() {
  * Display caption text when user clicks on image in the gallery.
  */
 function showCaption(element) {
-  var caption = element.querySelector("span");
+  let caption = element.querySelector("span");
   caption.classList.toggle("show-caption");
   caption.focus();
 }
@@ -78,7 +78,7 @@ function showCaption(element) {
  */
 function getComments() {
   const maxCommentsSelect = document.getElementById('max-comments');
-  var maxComments = maxCommentsSelect.value;
+  const maxComments = maxCommentsSelect.value;
   fetch('/data?max-comments=' + maxComments)
   .then(response => response.json())
   .then((comments) => {

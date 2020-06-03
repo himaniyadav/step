@@ -46,7 +46,6 @@ public class DeleteDataServlet extends HttpServlet {
       datastore.delete(taskEntity.getKey());
     }
 
-    // Redirect back to the HTML page. idk if this is right or if I'm meant to send an empty response.
     response.sendRedirect("/index.html#comments");
   }
 
