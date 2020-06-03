@@ -125,9 +125,19 @@
             <li class="button">
               <button type="submit">Submit</button>
             </li>
+            <li>
+              <label for="max-comments">Display # Comments:</label>
+              <select name="max-comments" id="max-comments" onchange="getComments()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="15">20</option>
+              </select>
+            </li>
             </ul>
         </form>
         <div id="comments-container"></div>
+        <button id="delete" onclick="deleteComments()">Delete All Comments</button>
       </div>
 
       <div class="footer" id="footer">
