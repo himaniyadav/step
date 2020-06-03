@@ -77,7 +77,9 @@ function showCaption(element) {
  * Fetch comments data from the data servlet to display on main page.
  */
 function getComments() {
-  fetch('/data')
+  const maxCommentsSelect = document.getElementById('max-comments');
+  var maxComments = maxCommentsSelect.value;
+  fetch('/data?max-comments=' + maxComments)
   .then(response => response.json())
   .then((comments) => {
     // comments is an array of json objects
@@ -86,7 +88,6 @@ function getComments() {
     if (Object.keys(comments).length == 0) {
         commentsElement.appendChild(createElement('Be the first to leave a comment.'));
     } else {
-      // TO DO: try to fix this to append new comments instead of erasing and rewriting them each time.
       commentsElement.innerHTML = '';
       for (i in comments) {
         const date = new Date(comments[i].timestamp);

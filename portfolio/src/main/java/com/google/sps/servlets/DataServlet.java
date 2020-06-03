@@ -22,6 +22,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.FetchOptions.Builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
@@ -38,6 +40,9 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    int maxComments = getMaxComments(request);
+
     // Preparing query instance to retrieve comments
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
@@ -45,7 +50,7 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     List<Comment> comments = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
+    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(maxComments))) {
       String name = (String) entity.getProperty("name");
       String message = (String) entity.getProperty("message");
       long timestamp = (long) entity.getProperty("timestamp");
@@ -75,6 +80,25 @@ public class DataServlet extends HttpServlet {
 
     // Redirect back to the HTML page.
     response.sendRedirect("/index.html#comments");
+  }
+
+  /*
+   * Gets the maximum number of comments to retrieve, as requested by the user.
+   */
+  private int getMaxComments(HttpServletRequest request) {
+    // Get input from the form.
+    String maxCommentsString = request.getParameter("max-comments");
+
+    // Convert the input to an int
+    int maxComments;
+    try {
+      maxComments = Integer.parseInt(maxCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + maxCommentsString);
+      return -1;
+    }
+
+    return maxComments;
   }
 
   /*
