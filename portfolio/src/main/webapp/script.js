@@ -84,11 +84,11 @@ function getComments() {
   .then((comments) => {
     // comments is an array of json objects
     const commentsElement = document.getElementById('comments-container');
+    commentsElement.innerHTML = '';
 
     if (Object.keys(comments).length == 0) {
         commentsElement.appendChild(createElement('Be the first to leave a comment.'));
     } else {
-      commentsElement.innerHTML = '';
       for (i in comments) {
         const date = new Date(comments[i].timestamp);
         commentsElement.appendChild(
@@ -98,6 +98,16 @@ function getComments() {
       }
     }
   });
+}
+
+/*
+ * Delete all comment data and clear main page.
+ */
+function deleteComments() {
+  fetch('/delete-data', {method: 'POST'})
+  .then(
+    getComments()
+  );
 }
 
 /* Creates a <p> element containing text for the comments. */

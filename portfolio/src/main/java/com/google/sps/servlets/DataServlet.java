@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that returns comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   
@@ -95,7 +95,7 @@ public class DataServlet extends HttpServlet {
       maxComments = Integer.parseInt(maxCommentsString);
     } catch (NumberFormatException e) {
       System.err.println("Could not convert to int: " + maxCommentsString);
-      return -1;
+      return 5; // set the default value to 5 if there was an error
     }
 
     return maxComments;
