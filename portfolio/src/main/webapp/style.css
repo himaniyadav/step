@@ -291,7 +291,7 @@ nav a:hover {
 
 /* Style the comments section */
 .comments {
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(250, 250, 250);
   color: hsl(240, 3%, 14%);
   grid-area: comments;
   padding: 30px 150px 50px;
@@ -303,11 +303,12 @@ nav a:hover {
 }
 
 .comments form {
+  background-color: rgb(245, 245, 245);
   border: 1px solid #CCC;
   border-radius: 1em;
   margin: 0 150;
   padding: 1em;
-  width: 400px;
+  width: 500px;
 }
 
 .comments ul {
@@ -323,6 +324,7 @@ nav a:hover {
 .comments label {
   display: inline-block;
   font-family: Montserrat;
+  margin: 0 0.75em 0 0.25em;
   text-align: right;
   width: 90px;
 }
@@ -333,7 +335,7 @@ textarea {
   border-radius: 7px;
   box-sizing: border-box;
   font: 1em sans-serif;
-  width: 300px;
+  width: 350px;
 }
 
 .comments input:focus, 
@@ -353,6 +355,81 @@ textarea:focus {
 .comments button {
   margin-left: .5em;
 }
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/9d/Arrow-down.svg'),
+  linear-gradient(to bottom, #ffffff 0%,#ffffff 100%);
+  background-repeat: no-repeat, repeat;
+  background-position: right .7em top 50%, 0 0;
+  background-size: .65em auto, 100%;
+  border: 2px solid #dadada;
+  border-radius: 0.5em;
+  box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+  box-sizing: border-box;
+  color: #444;
+  display: inline-block;
+  font-family: Montserrat;
+  font-size: 16px;
+  line-height: 1.2;
+  margin: 0;
+  max-width: 100%;
+  padding: .6em 1.4em .5em .8em;
+  width: auto;
+}
+
+select::-ms-expand {
+	display: none;
+}
+
+select:hover,
+select:focus {
+  border-color: #888;
+  color: #222;
+  outline: none;
+}
+
+.comments #comments-container div {
+  border-color: #CCC;
+  border-style: solid;
+  border-width: 0 0 1px;
+  margin: 1em 0;
+  padding: 0 0 1em 0;
+}
+
+.comments #comments-container h3 {
+  cursor: auto;
+  font-size: 28px; 
+  margin: 0;
+  padding: 0 0 0 20px;
+}
+
+.comments #comments-container h4 {
+  font-family: Poppins;
+  font-weight: normal;
+  margin: 0;
+  padding: 0 0 0 20px;
+}
+
+.comments #comments-container p {
+  margin: 0;
+  padding: 15px 35px 0;
+}
+
+.comments #comments-container button {
+  background: rgb(196, 183, 180);
+  font-size: 14px;
+  font-weight: 700;
+  margin: 15px 35px;
+}
+
+.comments button {
+  margin: 15px 0;
+}
+
 
 /* Style the footer/contact section */
 

@@ -87,32 +87,65 @@ function getComments() {
     commentsElement.innerHTML = '';
 
     if (Object.keys(comments).length == 0) {
-        commentsElement.appendChild(createElement('Be the first to leave a comment.'));
+        commentsElement.appendChild(createElement('Be the first to leave a comment.', 'p'));
     } else {
-      for (i in comments) {
-        const date = new Date(comments[i].timestamp);
-        commentsElement.appendChild(
-        createElement(`By: ${comments[i].name}
-                       On: ${date.toLocaleDateString()}
-                       Message: ${comments[i].message}`));
-      }
+      comments.forEach((comment) => {
+        commentsElement.appendChild(createCommentElement(comment));
+      })
     }
   });
 }
 
+/* 
+ * Creates an element that represents a comment and its delete button.
+ */
+function createCommentElement(comment) {
+  const divElem = createElement('', 'div');
+  divElem.className = 'comment';
+
+  divElem.appendChild(createElement(`${comment.name}`.toLowerCase(), 'h3'));
+
+  const date = new Date(comment.timestamp);
+  divElem.appendChild(createElement(`${date.toDateString()}`, 'h4'))
+
+  divElem.appendChild(createElement(`${comment.message}`, 'p'));
+
+  const deleteButtonElement = document.createElement('button');
+  deleteButtonElement.innerText = 'Delete';
+  deleteButtonElement.addEventListener('click', () => {
+    deleteComment(comment);
+    // Reload so the comment is removed from the DOM and the same number of comments is displayed.
+    getComments(); 
+  });
+
+  divElem.appendChild(deleteButtonElement);
+
+  return divElem;
+ }
+
 /*
  * Delete all comment data and clear main page.
  */
-function deleteComments() {
-  fetch('/delete-data', {method: 'POST'})
-  .then(
-    getComments()
-  );
+function deleteAllComments() {
+  if (window.confirm("Careful! Do you really want to delete all comments?")) { 
+    fetch('/delete-data', {method: 'POST'})
+    .then(getComments());
+  }  
 }
 
-/* Creates a <p> element containing text for the comments. */
-function createElement(text) {
-  const element = document.createElement('p');
+/*
+ * Tells the server to delete an individual comment. 
+ */
+function deleteComment(comment) {
+  const params = new URLSearchParams();
+  params.append('id', comment.id);
+  fetch('/delete-comment', {method: 'POST', body: params});
+}
+
+
+/* Creates an element containing text. */
+function createElement(text, type) {
+  const element = document.createElement(type);
   element.innerText = text;
   return element;
 }
