@@ -54,8 +54,9 @@ public class DataServlet extends HttpServlet {
       String name = (String) entity.getProperty("name");
       String message = (String) entity.getProperty("message");
       long timestamp = (long) entity.getProperty("timestamp");
+      long id = entity.getKey().getId();
 
-      addComment(comments, name, message, timestamp);
+      addComment(comments, name, message, timestamp, id);
     }
 
     // Send the JSON as the response
@@ -104,8 +105,8 @@ public class DataServlet extends HttpServlet {
   /*
    * Adds a comment to a list of comments.
    */
-  private void addComment(List comments, String name, String message, long timestamp) {
-    Comment comment = new Comment(name, message, timestamp);
+  private void addComment(List comments, String name, String message, long timestamp, long id) {
+    Comment comment = new Comment(name, message, timestamp, id);
     comments.add(comment);
   }
 
