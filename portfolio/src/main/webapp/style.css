@@ -426,6 +426,11 @@ select:focus {
   margin: 15px 35px;
 }
 
+.comments button {
+  margin: 15px 0;
+}
+
+
 /* Style the footer/contact section */
 
 .footer {

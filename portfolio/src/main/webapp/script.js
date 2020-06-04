@@ -87,7 +87,7 @@ function getComments() {
     commentsElement.innerHTML = '';
 
     if (Object.keys(comments).length == 0) {
-        commentsElement.appendChild(createElement('Be the first to leave a comment.'));
+        commentsElement.appendChild(createElement('Be the first to leave a comment.', 'p'));
     } else {
       comments.forEach((comment) => {
         commentsElement.appendChild(createCommentElement(comment));
@@ -127,10 +127,10 @@ function createCommentElement(comment) {
  * Delete all comment data and clear main page.
  */
 function deleteAllComments() {
-  fetch('/delete-data', {method: 'POST'})
-  .then(
-    getComments()
-  );
+  if (window.confirm("Careful! Do you really want to delete all comments?")) { 
+    fetch('/delete-data', {method: 'POST'})
+    .then(getComments());
+  }  
 }
 
 /*
