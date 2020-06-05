@@ -76,17 +76,19 @@ function showCaption(element) {
 /*
  * Fetch comments data from the data servlet to display on main page.
  */
+let pageNumber = 0;
 function getComments() {
   const maxCommentsSelect = document.getElementById('max-comments');
   const maxComments = maxCommentsSelect.value;
-  fetch('/data?max-comments=' + maxComments)
+
+  fetch('/data?max-comments=' + maxComments + '&page-num=' + pageNumber)
   .then(response => response.json())
   .then((comments) => {
     // comments is an array of json objects
     const commentsElement = document.getElementById('comments-container');
     commentsElement.innerHTML = '';
 
-    if (Object.keys(comments).length == 0) {
+    if (Object.keys(comments).length == 0 && pageNumber == 0) {
         commentsElement.appendChild(createElement('Be the first to leave a comment.', 'p'));
     } else {
       comments.forEach((comment) => {
@@ -121,7 +123,25 @@ function createCommentElement(comment) {
   divElem.appendChild(deleteButtonElement);
 
   return divElem;
- }
+}
+
+/*
+ * Navigates user to previous page of comments. 
+ */
+function previousPage() {
+  if (pageNumber > 0) {
+    pageNumber--;
+  }
+  getComments();
+}
+
+/*
+ * Navigates user to next page of comments. 
+ */
+function nextPage() {
+  pageNumber++;
+  getComments();
+}
 
 /*
  * Tells the server to add a comment. 
