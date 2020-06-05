@@ -124,6 +124,23 @@ function createCommentElement(comment) {
  }
 
 /*
+ * Tells the server to add a comment. 
+ */
+function addComment() {
+  const name = document.getElementById('name').value;
+  const message = document.getElementById('message').value;
+  const params = new URLSearchParams();
+  params.append('name', name);
+  params.append('message', message);
+  fetch('/data', {method: 'POST', body: params})
+  .then(ignore => {
+      getComments();
+      // clear form text
+      document.getElementById('comment-form').reset();
+   });
+}
+
+/*
  * Delete all comment data and clear main page.
  */
 function deleteAllComments() {
@@ -141,7 +158,6 @@ function deleteComment(comment) {
   params.append('id', comment.id);
   fetch('/delete-comment', {method: 'POST', body: params});
 }
-
 
 /* Creates an element containing text. */
 function createElement(text, type) {

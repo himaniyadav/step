@@ -353,7 +353,7 @@ textarea:focus {
 }
 
 .comments button {
-  margin-left: .5em;
+  margin: 15px 0 15px .75em;
 }
 
 select {
@@ -425,11 +425,6 @@ select:focus {
   font-weight: 700;
   margin: 15px 35px;
 }
-
-.comments button {
-  margin: 15px 0;
-}
-
 
 /* Style the footer/contact section */
 

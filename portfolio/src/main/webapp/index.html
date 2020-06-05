@@ -112,18 +112,18 @@
     
       <div class="comments">
         <h2 id="comments">Comments</h2>
-        <form action="/data" method="POST">
+        <form id="comment-form">
           <ul>
             <li>
               <label for="name">Name:</label>
               <input type="text" id="name" name="name">
             </li>
             <li>
-              <label for="msg">Message:</label>
-              <textarea id="msg" name="message"></textarea>
+              <label for="message">Message:</label>
+              <textarea id="message" name="message"></textarea>
             </li>
             <li class="button">
-              <button type="submit">Submit</button>
+              <button type="button" onclick="addComment()">Submit</button>
             </li>
             <li>
               <label for="max-comments">Show # Comments: </label>
