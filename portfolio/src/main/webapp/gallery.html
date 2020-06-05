@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Travel Gallery</title>
+    <title>Himani Yadav - Travel Gallery</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Poppins">
     <script src="script.js"></script>
@@ -116,6 +116,36 @@
                 spring break last year.</span>
           </div>
         </div>
+      </div>
+
+      <div class="comments">
+        <h2 id="comments">Comments</h2>
+        <form id="comment-form">
+          <ul>
+            <li>
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name">
+            </li>
+            <li>
+              <label for="message">Message:</label>
+              <textarea id="message" name="message"></textarea>
+            </li>
+            <li class="button">
+              <button type="button" onclick="addComment()">Submit</button>
+            </li>
+            <li>
+              <label for="max-comments">Show # Comments: </label>
+              <select name="max-comments" id="max-comments" onchange="getComments()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="15">20</option>
+              </select>
+            </li>
+            </ul>
+        </form>
+        <div id="comments-container"></div>
+        <button id="delete" onclick="deleteAllComments()">Delete All Comments</button>
       </div>
 
       <div class="footer" id="footer">
