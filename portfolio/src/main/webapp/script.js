@@ -16,10 +16,12 @@
  * JQuery to change header bar from transparent to solid on scroll.
  */
 $(window).scroll(function() {
-  if ($(document).scrollTop() < 50) {
-    $('.header').addClass('transparent');
-  } else {
-    $('.header').removeClass('transparent');
+  if ($('body.main-page').length > 0) {
+    if ($(document).scrollTop() < 50) {
+      $('.header').addClass('transparent');
+    } else {
+      $('.header').removeClass('transparent');
+    }
   }
 });
 
