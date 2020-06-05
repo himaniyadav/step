@@ -77,19 +77,32 @@ function showCaption(element) {
  * Fetch comments data from the data servlet to display on main page.
  */
 let pageNumber = 0;
+let numResults = 0;
+let maxComments = 5;
 function getComments() {
+  checkFirstPage();
+
   const maxCommentsSelect = document.getElementById('max-comments');
-  const maxComments = maxCommentsSelect.value;
+  maxComments = maxCommentsSelect.value;
 
   fetch('/data?max-comments=' + maxComments + '&page-num=' + pageNumber)
   .then(response => response.json())
   .then((comments) => {
     // comments is an array of json objects
+    numResults = Object.keys(comments).length;
+    
+    // clear the comments container before displaying new results
     const commentsElement = document.getElementById('comments-container');
     commentsElement.innerHTML = '';
 
-    if (Object.keys(comments).length == 0 && pageNumber == 0) {
-        commentsElement.appendChild(createElement('Be the first to leave a comment.', 'p'));
+    checkLastPage();
+
+    if (numResults === 0) {
+        if (pageNumber === 0) {
+           commentsElement.appendChild(createElement('Be the first to leave a comment.', 'p'));
+        } else {
+           commentsElement.appendChild(createElement('No more comments.', 'p'));
+        }
     } else {
       comments.forEach((comment) => {
         commentsElement.appendChild(createCommentElement(comment));
@@ -141,6 +154,30 @@ function previousPage() {
 function nextPage() {
   pageNumber++;
   getComments();
+}
+
+/*
+ * Disables button if user is on the first page of comments. 
+ */
+function checkFirstPage() {
+  let previous = document.getElementById("previous");
+  if (pageNumber === 0) {
+    previous.disabled = true;
+  } else {
+    previous.disabled = false;
+  }
+}
+
+/*
+ * Disables button if user is on the last page of comments. 
+ */
+function checkLastPage() {
+  let next = document.getElementById("next");
+  if (numResults < maxComments) {
+    next.disabled = true;
+  } else {
+    next.disabled = false;
+  }
 }
 
 /*
