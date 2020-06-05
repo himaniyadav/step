@@ -188,15 +188,19 @@ function checkLastPage() {
 function addComment() {
   const name = document.getElementById('name').value;
   const message = document.getElementById('message').value;
-  const params = new URLSearchParams();
-  params.append('name', name);
-  params.append('message', message);
-  fetch('/data', {method: 'POST', body: params})
-  .then(ignore => {
+
+  // only submit the comment if message contains a value
+  if (message !== '') {
+    const params = new URLSearchParams();
+    params.append('name', name);
+     params.append('message', message);
+    fetch('/data', {method: 'POST', body: params})
+    .then(ignore => {
       getComments();
       // clear form text
       document.getElementById('comment-form').reset();
-   });
+    });
+  }
 }
 
 /*
