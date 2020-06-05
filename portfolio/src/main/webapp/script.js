@@ -154,9 +154,11 @@ function deleteAllComments() {
  * Tells the server to delete an individual comment. 
  */
 function deleteComment(comment) {
-  const params = new URLSearchParams();
-  params.append('id', comment.id);
-  fetch('/delete-comment', {method: 'POST', body: params});
+  if (window.confirm("Are you sure you want to delete this comment?")) { 
+    const params = new URLSearchParams();
+    params.append('id', comment.id);
+    fetch('/delete-comment', {method: 'POST', body: params});
+  }
 }
 
 /* Creates an element containing text. */
