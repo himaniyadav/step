@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/* 
+/** 
  * Servlet that deletes an individual comment from datastore. 
  */
 @WebServlet("/delete-comment")

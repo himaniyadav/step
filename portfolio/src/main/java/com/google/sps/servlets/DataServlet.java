@@ -83,7 +83,7 @@ public class DataServlet extends HttpServlet {
     datastore.put(commentEntity);
   }
 
-  /*
+  /**
    * Gets the maximum number of comments to retrieve, as requested by the user.
    */
   private int getMaxComments(HttpServletRequest request) {
@@ -102,7 +102,7 @@ public class DataServlet extends HttpServlet {
     return maxComments;
   }
 
-  /*
+  /**
    * Gets the page number of comments to display.
    */
   private int getPageNum(HttpServletRequest request) {
@@ -121,7 +121,7 @@ public class DataServlet extends HttpServlet {
     return page;
   }
 
-  /*
+  /**
    * Adds a comment to a list of comments.
    */
   private void addComment(List comments, String name, String message, long timestamp, long id) {
@@ -129,7 +129,7 @@ public class DataServlet extends HttpServlet {
     comments.add(comment);
   }
 
-  /*
+  /**
    * Converts a Comment list instance into a JSON string using the Gson library.
    */
   private String convertToJson(List comments) {
