@@ -23,7 +23,7 @@
 
 /* Reset default html margins and paddings */
 
-html, body { 
+html, body {
   margin: 0; 
   padding: 0;
 }
