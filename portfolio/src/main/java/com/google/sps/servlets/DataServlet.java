@@ -49,7 +49,8 @@ public class DataServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    FetchOptions options = FetchOptions.Builder.withLimit(maxComments).offset(pageNumber * maxComments);
+    FetchOptions options = FetchOptions.Builder.withLimit(maxComments)
+                                               .offset(pageNumber * maxComments);
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable(options)) {
