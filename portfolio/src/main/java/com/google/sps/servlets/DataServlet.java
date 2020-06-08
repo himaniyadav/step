@@ -42,15 +42,17 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     int maxComments = getMaxComments(request);
+    int pageNumber = getPageNum(request);
 
     // Preparing query instance to retrieve comments
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
+    FetchOptions options = FetchOptions.Builder.withLimit(maxComments).offset(pageNumber * maxComments);
 
     List<Comment> comments = new ArrayList<>();
-    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(maxComments))) {
+    for (Entity entity : results.asIterable(options)) {
       String name = (String) entity.getProperty("name");
       String message = (String) entity.getProperty("message");
       long timestamp = (long) entity.getProperty("timestamp");
@@ -78,9 +80,6 @@ public class DataServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
-
-    // Redirect back to the HTML page.
-    response.sendRedirect("/index.html#comments");
   }
 
   /*
@@ -100,6 +99,25 @@ public class DataServlet extends HttpServlet {
     }
 
     return maxComments;
+  }
+
+  /*
+   * Gets the page number of comments to display.
+   */
+  private int getPageNum(HttpServletRequest request) {
+    // Get input from the form.
+    String pageString = request.getParameter("page-num");
+
+    // Convert the input to an int
+    int page;
+    try {
+      page = Integer.parseInt(pageString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + pageString);
+      return 0; // set the default value to 0 (first page) if there was an error
+    }
+
+    return page;
   }
 
   /*

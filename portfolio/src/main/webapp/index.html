@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="script.js"></script>    
   </head>
-  <body>
+  <body class="main-page">
     <div class="content">
       <div class="header transparent">
         <p>Himani Yadav.</p>  
@@ -112,18 +112,18 @@
     
       <div class="comments">
         <h2 id="comments">Comments</h2>
-        <form action="/data" method="POST">
+        <form id="comment-form">
           <ul>
             <li>
               <label for="name">Name:</label>
               <input type="text" id="name" name="name">
             </li>
             <li>
-              <label for="msg">Message:</label>
-              <textarea id="msg" name="message"></textarea>
+              <label for="message">Message:</label>
+              <textarea id="message" name="message"></textarea>
             </li>
             <li class="button">
-              <button type="submit">Submit</button>
+              <button type="button" onclick="addComment()">Submit</button>
             </li>
             <li>
               <label for="max-comments">Show # Comments: </label>
@@ -137,7 +137,13 @@
             </ul>
         </form>
         <div id="comments-container"></div>
-        <button id="delete" onclick="deleteAllComments()">Delete All Comments</button>
+        <div id="button-container">
+          <button id="delete" onclick="deleteAllComments()">Delete All Comments</button>
+          <div id="page-turn">
+			<button id="next" class="page-button" onclick="nextPage()">Next &raquo;</button>
+			<button id="previous" class="page-button" onclick="previousPage()">&laquo; Previous</button>
+		</div>
+        </div>
       </div>
 
       <div class="footer" id="footer">

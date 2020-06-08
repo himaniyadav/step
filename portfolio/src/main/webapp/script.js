@@ -16,10 +16,12 @@
  * JQuery to change header bar from transparent to solid on scroll.
  */
 $(window).scroll(function() {
-  if ($(document).scrollTop() < 50) {
-    $('.header').addClass('transparent');
-  } else {
-    $('.header').removeClass('transparent');
+  if ($('body.main-page').length > 0) {
+    if ($(document).scrollTop() < 50) {
+      $('.header').addClass('transparent');
+    } else {
+      $('.header').removeClass('transparent');
+    }
   }
 });
 
@@ -76,18 +78,33 @@ function showCaption(element) {
 /*
  * Fetch comments data from the data servlet to display on main page.
  */
+let pageNumber = 0;
+let numResults = 0;
+let maxComments = 5;
 function getComments() {
+  checkFirstPage();
+
   const maxCommentsSelect = document.getElementById('max-comments');
-  const maxComments = maxCommentsSelect.value;
-  fetch('/data?max-comments=' + maxComments)
+  maxComments = maxCommentsSelect.value;
+
+  fetch('/data?max-comments=' + maxComments + '&page-num=' + pageNumber)
   .then(response => response.json())
   .then((comments) => {
     // comments is an array of json objects
+    numResults = Object.keys(comments).length;
+    
+    // clear the comments container before displaying new results
     const commentsElement = document.getElementById('comments-container');
     commentsElement.innerHTML = '';
 
-    if (Object.keys(comments).length == 0) {
-        commentsElement.appendChild(createElement('Be the first to leave a comment.', 'p'));
+    checkLastPage();
+
+    if (numResults === 0) {
+        if (pageNumber === 0) {
+           commentsElement.appendChild(createElement('Be the first to leave a comment.', 'p'));
+        } else {
+           commentsElement.appendChild(createElement('No more comments.', 'p'));
+        }
     } else {
       comments.forEach((comment) => {
         commentsElement.appendChild(createCommentElement(comment));
@@ -121,7 +138,70 @@ function createCommentElement(comment) {
   divElem.appendChild(deleteButtonElement);
 
   return divElem;
- }
+}
+
+/*
+ * Navigates user to previous page of comments. 
+ */
+function previousPage() {
+  if (pageNumber > 0) {
+    pageNumber--;
+  }
+  getComments();
+}
+
+/*
+ * Navigates user to next page of comments. 
+ */
+function nextPage() {
+  pageNumber++;
+  getComments();
+}
+
+/*
+ * Disables button if user is on the first page of comments. 
+ */
+function checkFirstPage() {
+  let previous = document.getElementById("previous");
+  if (pageNumber === 0) {
+    previous.disabled = true;
+  } else {
+    previous.disabled = false;
+  }
+}
+
+/*
+ * Disables button if user is on the last page of comments. 
+ */
+function checkLastPage() {
+  let next = document.getElementById("next");
+  if (numResults < maxComments) {
+    next.disabled = true;
+  } else {
+    next.disabled = false;
+  }
+}
+
+/*
+ * Tells the server to add a comment. 
+ */
+function addComment() {
+  const name = document.getElementById('name').value;
+  const message = document.getElementById('message').value;
+
+  // only submit the comment if message contains a value
+  if (message !== '') {
+    const params = new URLSearchParams();
+    params.append('name', name);
+     params.append('message', message);
+    fetch('/data', {method: 'POST', body: params})
+    .then(ignore => {
+      getComments();
+      // clear form text
+      document.getElementById('comment-form').reset();
+    });
+  }
+}
 
 /*
  * Delete all comment data and clear main page.
@@ -137,11 +217,12 @@ function deleteAllComments() {
  * Tells the server to delete an individual comment. 
  */
 function deleteComment(comment) {
-  const params = new URLSearchParams();
-  params.append('id', comment.id);
-  fetch('/delete-comment', {method: 'POST', body: params});
+  if (window.confirm("Are you sure you want to delete this comment?")) { 
+    const params = new URLSearchParams();
+    params.append('id', comment.id);
+    fetch('/delete-comment', {method: 'POST', body: params});
+  }
 }
-
 
 /* Creates an element containing text. */
 function createElement(text, type) {

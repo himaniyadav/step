@@ -353,7 +353,7 @@ textarea:focus {
 }
 
 .comments button {
-  margin-left: .5em;
+  margin: 10px 0 10px .75em;
 }
 
 select {
@@ -426,10 +426,23 @@ select:focus {
   margin: 15px 35px;
 }
 
-.comments button {
-  margin: 15px 0;
+.comments .page-button {
+  cursor: pointer;
+  background: rgb(196, 183, 180);
+  float: right;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 15px 5px;
 }
 
+.page-button:disabled {
+  background-color: #CCC;
+}
+
+.comments #button-container {
+  display: flex;
+  justify-content: space-between;
+}
 
 /* Style the footer/contact section */
 
@@ -493,11 +506,12 @@ select:focus {
 
 .gallery-content {
   display: grid;
-  grid-template-rows: 55px auto 240px;
+  grid-template-rows: 55px auto auto 240px;
   grid-template-columns: auto;
   grid-template-areas:
     "header"
     "gallery-area"
+    "comments"
     "footer";
 }
 
@@ -512,24 +526,23 @@ select:focus {
 
 .gallery-area #pagename {
   font-family: 'Poppins';
-  font-size: 50px; 
-  font-style: bold;
+  font-size: 40px;
   font-weight: 700; 
-  line-height: 50px;
+  line-height: 40px;
   margin: 0;
   padding: 30px 0;
 }
 
 @media screen and (max-width: 1000px) {
   .gallery-area {
-      padding: 50px 50px 20px;
+    padding: 50px 50px 20px;
   }
   .gallery-area #pagename {
     font-family: 'Poppins';
-    font-size: 30px; 
-    font-style: bold;
+    font-size: 30px;
     font-weight: 700;
     line-height: 30px;
+    text-align: center;
   }
 }
 

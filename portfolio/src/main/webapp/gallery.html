@@ -2,9 +2,10 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Travel Gallery</title>
+    <title>Himani Yadav - Travel Gallery</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat|Poppins">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="script.js"></script>
   </head>
   <body>
@@ -62,7 +63,7 @@
           </div>
           <div class="image" onclick="showCaption(this)" aria-role="button" tabindex="0" aria-label="Show caption">
             <img src="/images/gallery/cornwall.jpeg" alt="Coast in Cornwall">
-            <span class="caption">The Cornish coastline has to be one of the most gorgeous, peaceful places 
+            <span class="caption">The Cornish coastline has to be one of the most gorgeous and peaceful places 
                 I've ever been to. We took a (literally) breathtaking 5 mile hike along the coast.
             </span>
           </div>
@@ -78,7 +79,8 @@
           </div>
           <div class="image" onclick="showCaption(this)" aria-role="button" tabindex="0" aria-label="Show caption">
             <img src="/images/gallery/paris-balloon.jpg" alt="Balloons in Paris">
-            <span class="caption">Pretty balloons at an outdoor market in Paris.</span>
+            <span class="caption">Pretty balloons at an outdoor market in Paris. 
+                (Peep our ridiculously oversized backpacks 👀)</span>
           </div>
           <div class="image" onclick="showCaption(this)" aria-role="button" tabindex="0" aria-label="Show caption">
             <img src="/images/gallery/sitges.jpg" alt="Sitges, Spain">
@@ -115,6 +117,42 @@
             <span class="caption">Lived out my Gossip Girl dreams when I saw the Met steps in person in NYC over 
                 spring break last year.</span>
           </div>
+        </div>
+      </div>
+
+      <div class="comments">
+        <h2 id="comments">Comments</h2>
+        <form id="comment-form">
+          <ul>
+            <li>
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name">
+            </li>
+            <li>
+              <label for="message">Message:</label>
+              <textarea id="message" name="message"></textarea>
+            </li>
+            <li class="button">
+              <button type="button" onclick="addComment()">Submit</button>
+            </li>
+            <li>
+              <label for="max-comments">Show # Comments: </label>
+              <select name="max-comments" id="max-comments" onchange="getComments()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="15">20</option>
+              </select>
+            </li>
+            </ul>
+        </form>
+        <div id="comments-container"></div>
+        <div id="button-container">
+          <button id="delete" onclick="deleteAllComments()">Delete All Comments</button>
+          <div id="page-turn">
+			<button id="next" class="page-button" onclick="nextPage()">Next &raquo;</button>
+			<button id="previous" class="page-button" onclick="previousPage()">&laquo; Previous</button>
+		</div>
         </div>
       </div>
 
