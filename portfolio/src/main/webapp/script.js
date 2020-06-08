@@ -193,7 +193,7 @@ function addComment() {
   if (message !== '') {
     const params = new URLSearchParams();
     params.append('name', name);
-     params.append('message', message);
+    params.append('message', message);
     fetch('/data', {method: 'POST', body: params})
     .then(ignore => {
       getComments();
