@@ -30,7 +30,8 @@ $(window).scroll(function() {
  */
 function addRandomGreeting() {
   const greetings =
-      ["HELLO, I\'M", "HOLA, ME LLAMO", "NAMASTE, MERA NAAM HAI", "BONJOUR, JE M\'APPELLE"];
+    ["HELLO, I\'M", "HOLA, ME LLAMO", "NAMASTE, MERA NAAM HAI", 
+    "BONJOUR, JE M\'APPELLE"];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -46,15 +47,16 @@ function addRandomGreeting() {
 let randomFact = 0;
 function addRandomFact() {
   const factoids =
-    ['I\'ve never been stung by a bee 🐝', 'I love choir! I sing Alto 🎶', 'My dream vacation is Bali 🌴', 'I used to run a book blog! 📚',
-     'My favorite color is purple 💜' , 'My favorite composer is Debussy 🎹'];
+    ['I\'ve never been stung by a bee 🐝', 'I love choir! I sing Alto 🎶', 
+    'My dream vacation is Bali 🌴', 'I used to run a book blog! 📚',
+    'My favorite color is purple 💜' , 'My favorite composer is Debussy 🎹'];
 
   // Pick a random fact.
   const index = Math.floor(Math.random() * factoids.length);
 
   // Get a different index than last time.
-  if (index == randomFact) {
-      index++;
+  if (index === randomFact) {
+    index++;
   }
   randomFact = index % factoids.length;
 
@@ -70,8 +72,8 @@ function addRandomFact() {
  * Display caption text when user clicks on image in the gallery.
  */
 function showCaption(element) {
-  let caption = element.querySelector("span");
-  caption.classList.toggle("show-caption");
+  let caption = element.querySelector('span');
+  caption.classList.toggle('show-caption');
   caption.focus();
 }
 
@@ -100,15 +102,16 @@ function getComments() {
     checkLastPage();
 
     if (numResults === 0) {
-        if (pageNumber === 0) {
-           commentsElement.appendChild(createElement('Be the first to leave a comment.', 'p'));
-        } else {
-           commentsElement.appendChild(createElement('No more comments.', 'p'));
-        }
+      if (pageNumber === 0) {
+        commentsElement.appendChild(
+            createElement('Be the first to leave a comment.', 'p'));
+      } else {
+         commentsElement.appendChild(createElement('No more comments.', 'p'));
+      }
     } else {
       comments.forEach((comment) => {
         commentsElement.appendChild(createCommentElement(comment));
-      })
+      });
     }
   });
 }
@@ -131,7 +134,8 @@ function createCommentElement(comment) {
   deleteButtonElement.innerText = 'Delete';
   deleteButtonElement.addEventListener('click', () => {
     deleteComment(comment);
-    // Reload so the comment is removed from the DOM and the same number of comments is displayed.
+    // Reload so the comment is removed from the DOM and the same number 
+    // of comments is displayed.
     getComments(); 
   });
 
@@ -195,7 +199,7 @@ function addComment() {
     params.append('name', name);
     params.append('message', message);
     fetch('/data', {method: 'POST', body: params})
-    .then(ignore => {
+    .then((ignore) => {
       getComments();
       // clear form text
       document.getElementById('comment-form').reset();
@@ -207,7 +211,7 @@ function addComment() {
  * Delete all comment data and clear main page.
  */
 function deleteAllComments() {
-  if (window.confirm("Careful! Do you really want to delete all comments?")) { 
+  if (window.confirm("Careful! Do you really want to delete all comments?")) {
     fetch('/delete-data', {method: 'POST'})
     .then(getComments());
   }  
