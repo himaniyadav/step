@@ -506,11 +506,12 @@ select:focus {
 
 .gallery-content {
   display: grid;
-  grid-template-rows: 55px auto auto 240px;
+  grid-template-rows: 55px auto auto auto 240px;
   grid-template-columns: auto;
   grid-template-areas:
     "header"
     "gallery-area"
+    "map"
     "comments"
     "footer";
 }
@@ -604,4 +605,16 @@ select:focus {
 
 .caption.show-caption {
   opacity: 1;
+}
+
+/* Style the map section on the gallery page */
+.map {
+  background-color: rgb(245, 245, 245);
+  grid-area: map;
+  padding: 20px 150px 20px;
+}
+
+.map #map {
+  height: 500px;
+  width: 500px; 
 }

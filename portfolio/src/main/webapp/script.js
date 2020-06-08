@@ -232,4 +232,4 @@ function createElement(text, type) {
 }
 
 /* Run the getComments() function when the page loads. */
-window.onload = getComments;
+window.addEventListener('load', getComments);
