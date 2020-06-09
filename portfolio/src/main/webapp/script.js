@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+const DELETE_ALL_COMMENTS_WARNING = 'Careful! Do you really want to delete all comments?';
+const DELETE_COMMENT_WARNING = 'Are you sure you want to delete this comment?';
+
 /*
  * JQuery to change header bar from transparent to solid on scroll.
  */
@@ -29,9 +32,10 @@ $(window).scroll(function() {
  * Add a random greeting to the intro section of main page.
  */
 function addRandomGreeting() {
-  const greetings =
-    ["HELLO, I\'M", "HOLA, ME LLAMO", "NAMASTE, MERA NAAM HAI", 
-    "BONJOUR, JE M\'APPELLE"];
+  const greetings = [
+    "HELLO, I\'M", "HOLA, ME LLAMO", "NAMASTE, MERA NAAM HAI", 
+    "BONJOUR, JE M\'APPELLE", "CIAO, MI CHIAMO",
+  ];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -46,10 +50,11 @@ function addRandomGreeting() {
  */
 let randomFact = 0;
 function addRandomFact() {
-  const factoids =
-    ['I\'ve never been stung by a bee 🐝', 'I love choir! I sing Alto 🎶', 
+  const factoids =[
+    'I\'ve never been stung by a bee 🐝', 'I love choir! I sing Alto 🎶', 
     'My dream vacation is Bali 🌴', 'I used to run a book blog! 📚',
-    'My favorite color is purple 💜' , 'My favorite composer is Debussy 🎹'];
+    'My favorite color is purple 💜' , 'My favorite composer is Debussy 🎹',
+  ];
 
   // Pick a random fact.
   const index = Math.floor(Math.random() * factoids.length);
@@ -211,7 +216,7 @@ function addComment() {
  * Delete all comment data and clear main page.
  */
 function deleteAllComments() {
-  if (window.confirm("Careful! Do you really want to delete all comments?")) {
+  if (window.confirm(DELETE_ALL_COMMENTS_WARNING)) {
     fetch('/delete-data', {method: 'POST'})
     .then(getComments());
   }  
@@ -221,7 +226,7 @@ function deleteAllComments() {
  * Tells the server to delete an individual comment. 
  */
 function deleteComment(comment) {
-  if (window.confirm("Are you sure you want to delete this comment?")) { 
+  if (window.confirm(DELETE_COMMENT_WARNING)) { 
     const params = new URLSearchParams();
     params.append('id', comment.id);
     fetch('/delete-comment', {method: 'POST', body: params});
