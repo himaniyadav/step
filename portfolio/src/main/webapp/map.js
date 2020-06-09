@@ -24,12 +24,26 @@ function createMap() {
   const map = new google.maps.Map(
       document.getElementById('map'),
       {center: {lat: 36.9, lng: -76.66}, zoom: 5.2}); 
+
+  addImageLandmark(
+      map, 33.9467697, -83.3755391, 'UGA Science Library',
+      'The UGA Science Library, affectionately known as the Sci Li.')
+  addImageLandmark(
+      map, 33.9464951, -83.3772612, 'Myers Quad',
+      'Myers Quad aka the best place on campus!')
+  addImageLandmark(
+      map, 34.647210, -83.719380, 'Yonah Mountain',
+      'Yonah Mountain in Georgia.');
+  addImageLandmark(
+      map, 31.9857085, -81.0306078, 'UGA Marine Center',
+      'UGA Marine Center on Skidaway Island in Savannah, Georgia.');
 }
 
 /** 
- * Adds a marker that shows an info window when clicked. 
+ * Adds a marker that shows an info window when clicked.
+ * Represents a place pictured in the image gallery.
  */
-function addLandmark(map, lat, lng, title, description) {
+function addImageLandmark(map, lat, lng, title, description) {
   const marker = new google.maps.Marker(
       {position: {lat: lat, lng: lng}, map: map, title: title});
 
