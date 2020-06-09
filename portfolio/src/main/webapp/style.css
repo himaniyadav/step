@@ -615,6 +615,7 @@ select:focus {
 }
 
 .map #map {
+  display: inline-block;
   height: 600px;
   width: 600px; 
 }
@@ -625,6 +626,7 @@ select:focus {
     padding: 20px 50px 20px;
   }
   .map #map {
+    display: inline-block;
     height: 450px;
     width: 450px; 
   }
