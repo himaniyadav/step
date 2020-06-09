@@ -25,6 +25,7 @@ function createMap() {
       document.getElementById('map'),
       {center: {lat: 36.9, lng: -76.66}, zoom: 5.2}); 
 
+  // add hardcoded markers to visualize where each gallery image was taken
   addImageLandmark(
       map, 33.9467697, -83.3755391, 'UGA Science Library',
       'The UGA Science Library, affectionately known as the Sci Li.')
@@ -37,6 +38,42 @@ function createMap() {
   addImageLandmark(
       map, 31.9857085, -81.0306078, 'UGA Marine Center',
       'UGA Marine Center on Skidaway Island in Savannah, Georgia.');
+  addImageLandmark(
+      map, 40.713050, -74.007230, 'The Met',
+      'The Metropolitan Museum of Art in NYC.');
+  addImageLandmark(
+      map, 51.5033273, -0.1217317, 'London Eye',
+      'The London Eye by the Thames.');
+  addImageLandmark(
+      map, 51.514510, -0.098420, 'St. Pauls Cathedral',
+      'St Paul\'s Cathedral in London.');
+  addImageLandmark(
+      map, 50.6661297, -4.7590606, 'Tintagel, Cornwall',
+      'The coast at Tintagel, Cornwall');
+  addImageLandmark(
+      map, 51.752776, -1.253692, 'Oxford, England',
+      'The view of Oxford from atop the University Church of St Mary the Virgin.');
+  addImageLandmark(
+      map, 51.1462534, -2.7157123, 'King Arthur\s Tomb',
+      'Glastonbury Abbey by King Arthur\'s Tomb.');
+  addImageLandmark(
+      map, 48.8594193, 2.3004549, 'Eiffel Tower',
+      'A side street near the Eiffel Tower.');
+  addImageLandmark(
+      map, 48.8552017, 2.3150708, 'Rodin Museum',
+      'The Thinker Statue at the Rodin Museum in Paris.');
+  addImageLandmark(
+      map, 48.8322871, 2.3846624, 'Paris Shops',
+      'Outdoor shop in Paris.');
+  addImageLandmark(
+    map, 41.2465819,1.8223518, 'Sitges, Spain',
+    'Near our stay in Sitges, Spain.');
+  addImageLandmark(
+    map, 52.3668475, 4.891357, 'Floating Flower Market',
+    'The floating flower market in Amsterdam.');
+  addImageLandmark(
+    map, 52.3773409, 4.8987192, 'Basilica in Amsterdam',
+    'By the canals with a view of the Basilica in Central Amsterdam.');
 }
 
 /** 
