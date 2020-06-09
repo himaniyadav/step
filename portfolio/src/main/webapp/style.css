@@ -615,6 +615,18 @@ select:focus {
 }
 
 .map #map {
-  height: 500px;
-  width: 500px; 
+  height: 600px;
+  width: 600px; 
 }
+
+@media screen and (max-width: 800px) {
+  .map {
+    text-align: center;
+    padding: 20px 50px 20px;
+  }
+  .map #map {
+   height: 450px;
+    width: 450px; 
+  }
+}
+
