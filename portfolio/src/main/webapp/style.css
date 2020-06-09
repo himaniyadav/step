@@ -625,7 +625,7 @@ select:focus {
     padding: 20px 50px 20px;
   }
   .map #map {
-   height: 450px;
+    height: 450px;
     width: 450px; 
   }
 }
