@@ -615,6 +615,45 @@ select:focus {
 }
 
 .map #map {
-  height: 500px;
-  width: 500px; 
+  display: inline-block;
+  height: 600px;
+  width: 600px; 
 }
+
+.map #legend {
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  font-family: Montserrat;
+  margin: 10px;
+  padding: 10px;
+}
+
+.map #legend h3 {
+  cursor: auto;
+  color: rgb(25,25,25);
+  font-family: Poppins;
+  font-weight: normal;
+  font-size: 16px;
+  font-variant: normal;
+  margin-top: 0;
+  text-align: center;
+}
+
+.map #legend img {
+  vertical-align: middle;
+  padding: 2px;
+}
+
+@media screen and (max-width: 800px) {
+  .map {
+    text-align: center;
+    padding: 20px 50px 20px;
+  }
+  .map #map {
+    display: inline-block;
+    height: 450px;
+    width: 450px; 
+  }
+}
+
