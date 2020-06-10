@@ -23,7 +23,7 @@
 
 /* Reset default html margins and paddings */
 
-html, body { 
+html, body {
   margin: 0; 
   padding: 0;
 }
@@ -506,11 +506,12 @@ select:focus {
 
 .gallery-content {
   display: grid;
-  grid-template-rows: 55px auto auto 240px;
+  grid-template-rows: 55px auto auto auto 240px;
   grid-template-columns: auto;
   grid-template-areas:
     "header"
     "gallery-area"
+    "map"
     "comments"
     "footer";
 }
@@ -605,3 +606,54 @@ select:focus {
 .caption.show-caption {
   opacity: 1;
 }
+
+/* Style the map section on the gallery page */
+.map {
+  background-color: rgb(245, 245, 245);
+  grid-area: map;
+  padding: 20px 150px 20px;
+}
+
+.map #map {
+  display: inline-block;
+  height: 600px;
+  width: 600px; 
+}
+
+.map #legend {
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  font-family: Montserrat;
+  margin: 10px;
+  padding: 10px;
+}
+
+.map #legend h3 {
+  cursor: auto;
+  color: rgb(25,25,25);
+  font-family: Poppins;
+  font-weight: normal;
+  font-size: 16px;
+  font-variant: normal;
+  margin-top: 0;
+  text-align: center;
+}
+
+.map #legend img {
+  vertical-align: middle;
+  padding: 2px;
+}
+
+@media screen and (max-width: 800px) {
+  .map {
+    text-align: center;
+    padding: 20px 50px 20px;
+  }
+  .map #map {
+    display: inline-block;
+    height: 450px;
+    width: 450px; 
+  }
+}
+
