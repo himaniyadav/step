@@ -159,6 +159,13 @@ function createMap() {
       'My current team is based in Pittsburgh. I\'d love to visit Google PIT!'
   );
 
+  // When the user clicks in the map, allow user to create and edit a marker.
+  map.addListener('click', (event) => {
+    createEditMarker(event.latLng.lat(), event.latLng.lng());
+  });
+
+  fetchMarkers();
+
   // Create and display legend of icons.
   let legend = document.getElementById('legend');
   for (var key in icons) {
@@ -202,4 +209,96 @@ function addPlaceMarker(lat, lng, title, description) {
   marker.addListener('click', () => {
     infoWindow.open(map, marker);
   });
+}
+
+/**
+ * Gets markers from the datastore and adds them to the map.
+ */
+function fetchMarkers() {
+  fetch('/markers')
+  .then(response => response.json())
+  .then((markers) => {
+    markers.forEach(
+        (marker) => {
+            addUserMarker(marker.lat, marker.lng, marker.content)});
+  });
+}
+
+/**
+ * Adds a marker that shows an info window.
+ * Represents a user-submitted marker.
+ */
+function addUserMarker(lat, lng, description) {
+  const marker = new google.maps.Marker({
+    position: {lat: lat, lng: lng}, 
+    map: map,
+    icon: icons.user.icon
+  });
+
+  const infoWindow = new google.maps.InfoWindow({content: description});
+  marker.addListener('click', () => {
+    infoWindow.open(map, marker);
+  });
+}
+
+/** 
+ * Sends a marker to server to save. 
+ */
+function postMarker(lat, lng, content) {
+  const params = new URLSearchParams();
+  params.append('lat', lat);
+  params.append('lng', lng);
+  params.append('content', content);
+
+  fetch('/markers', {method: 'POST', body: params});
+}
+
+let editableMarker;
+/** 
+ * Creates a marker that shows a textbox the user can edit. 
+ */
+function createEditMarker(lat, lng) {
+  // If we're already showing an editable marker, then remove it.
+  if (editableMarker) {
+    editableMarker.setMap(null);
+  }
+
+  editableMarker = new google.maps.Marker({
+    position: {lat: lat, lng: lng}, 
+    map: map,
+    icon: icons.user.icon
+  });
+
+  const infoWindow = new google.maps.InfoWindow(
+    {content: buildInfoWindowInput(lat, lng)});
+
+  // When the user closes the editable info window, remove the marker.
+  google.maps.event.addListener(infoWindow, 'closeclick', () => {
+    editableMarker.setMap(null);
+  });
+
+  infoWindow.open(map, editableMarker);
+}
+
+/**
+ * Builds HTML elements that show an editable textbox and a submit
+ * button to go in the info window.
+ */
+function buildInfoWindowInput(lat, lng) {
+  const textBox = document.createElement('textarea');
+  const submit = document.createElement('button');
+  submit.appendChild(document.createTextNode('Submit'));
+
+  submit.onclick = () => {
+    postMarker(lat, lng, textBox.value);
+    addUserMarker(lat, lng, textBox.value);
+    editableMarker.setMap(null);
+  };
+
+  const containerDiv = document.createElement('div');
+  containerDiv.appendChild(textBox);
+  containerDiv.appendChild(document.createElement('br'));
+  containerDiv.appendChild(submit);
+
+  return containerDiv;
 }
