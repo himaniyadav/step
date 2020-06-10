@@ -153,7 +153,8 @@ function createMap() {
       'Visiting Peru would be so cool!'
   );
   addPlaceMarker(
-      map, -8.5525233, 114.8082374, 
+      map, 
+      -8.5525233, 114.8082374, 
       'Bali, Indonesia',
       'I would love to visit Bali one day!'
   );
