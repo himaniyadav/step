@@ -32,6 +32,8 @@ const icons = {
   },
 };
 
+const DELETE_MARKER_WARNING = 'Are you sure you want to delete this marker?';
+
 let map;
 
 /** 
@@ -161,7 +163,7 @@ function createMap() {
 
   // When the user clicks in the map, allow user to create and edit a marker.
   map.addListener('click', (event) => {
-    createEditMarker(event.latLng.lat(), event.latLng.lng());
+    addEditMarker(event.latLng.lat(), event.latLng.lng());
   });
 
   fetchMarkers();
@@ -218,9 +220,10 @@ function fetchMarkers() {
   fetch('/markers')
   .then(response => response.json())
   .then((markers) => {
-    markers.forEach(
-        (marker) => {
-            addUserMarker(marker.lat, marker.lng, marker.content)});
+    // markers is an array of JSON objects
+    markers.forEach((marker) => {
+        addUserMarker(marker.lat, marker.lng, marker.content, marker.id)
+    });
   });
 }
 
@@ -228,36 +231,26 @@ function fetchMarkers() {
  * Adds a marker that shows an info window.
  * Represents a user-submitted marker.
  */
-function addUserMarker(lat, lng, description) {
+function addUserMarker(lat, lng, description, id) {
   const marker = new google.maps.Marker({
     position: {lat: lat, lng: lng}, 
     map: map,
     icon: icons.user.icon
   });
 
-  const infoWindow = new google.maps.InfoWindow({content: description});
+  const infoWindow = new google.maps.InfoWindow(
+    {content: buildMarkerInfoWindow(marker, description, id)});
+  
   marker.addListener('click', () => {
     infoWindow.open(map, marker);
   });
-}
-
-/** 
- * Sends a marker to server to save. 
- */
-function postMarker(lat, lng, content) {
-  const params = new URLSearchParams();
-  params.append('lat', lat);
-  params.append('lng', lng);
-  params.append('content', content);
-
-  fetch('/markers', {method: 'POST', body: params});
 }
 
 let editableMarker;
 /** 
  * Creates a marker that shows a textbox the user can edit. 
  */
-function createEditMarker(lat, lng) {
+function addEditMarker(lat, lng) {
   // If we're already showing an editable marker, then remove it.
   if (editableMarker) {
     editableMarker.setMap(null);
@@ -270,7 +263,7 @@ function createEditMarker(lat, lng) {
   });
 
   const infoWindow = new google.maps.InfoWindow(
-    {content: buildInfoWindowInput(lat, lng)});
+    {content: buildInputInfoWindow(lat, lng)});
 
   // When the user closes the editable info window, remove the marker.
   google.maps.event.addListener(infoWindow, 'closeclick', () => {
@@ -281,11 +274,37 @@ function createEditMarker(lat, lng) {
 }
 
 /**
+ * Builds HTML elements that show the marker description and a delete
+ * button to go in the info window.
+ */
+function buildMarkerInfoWindow(marker, description, id) {
+  const text = document.createElement('span');
+  text.innerText = description;
+
+  const deleteButton = document.createElement('button');
+  deleteButton.appendChild(document.createTextNode('Delete'));
+
+  deleteButton.onclick = () => {
+    deleteMarker(id);
+    marker.setMap(null);
+  };
+
+  const containerDiv = document.createElement('div');
+  containerDiv.appendChild(text);
+  containerDiv.appendChild(document.createElement('br'));
+  containerDiv.appendChild(deleteButton);
+
+  return containerDiv;
+}
+
+/**
  * Builds HTML elements that show an editable textbox and a submit
  * button to go in the info window.
  */
-function buildInfoWindowInput(lat, lng) {
+function buildInputInfoWindow(lat, lng) {
   const textBox = document.createElement('textarea');
+  textBox.placeholder = 'Add a description...';
+
   const submit = document.createElement('button');
   submit.appendChild(document.createTextNode('Submit'));
 
@@ -301,4 +320,27 @@ function buildInfoWindowInput(lat, lng) {
   containerDiv.appendChild(submit);
 
   return containerDiv;
+}
+
+/** 
+ * Sends a marker to server to save. 
+ */
+function postMarker(lat, lng, content) {
+  const params = new URLSearchParams();
+  params.append('lat', lat);
+  params.append('lng', lng);
+  params.append('content', content);
+
+  fetch('/markers', {method: 'POST', body: params});
+}
+
+/**
+ * Tells the server to delete an individual marker. 
+ */
+function deleteMarker(id) {
+  if (window.confirm(DELETE_MARKER_WARNING)) {
+    const params = new URLSearchParams();
+    params.append('id', id);
+    fetch('/delete-marker', {method: 'POST', body: params});
+  }
 }
