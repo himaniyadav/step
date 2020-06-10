@@ -41,7 +41,7 @@ function createMap() {
   map = new google.maps.Map(
       document.getElementById('map'),
       {center: {lat: 36.9, lng: -76.66}, zoom: 5.2}); 
-
+  
   // Add hardcoded markers to visualize where each gallery image was taken.
   addImageLandmark( 
       33.9467697, -83.3755391, 
