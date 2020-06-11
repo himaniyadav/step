@@ -91,6 +91,8 @@ function showCaption(element) {
    fetch('/login')
   .then(response => response.json())
   .then((login) => {
+    // login is a JSON object
+    
     const commentsDiv = document.getElementById('comments');
 
     if (login.email === 'null') {
