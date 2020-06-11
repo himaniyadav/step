@@ -94,14 +94,15 @@ function showCaption(element) {
     const commentsDiv = document.getElementById('comments');
 
     if (login.email === 'null') {
+      // user is logged out
       const loginText = createElement('<a href=\"' + login.url 
           + '\">Log in</a> to submit a comment.', 'p');
       commentsDiv.appendChild(loginText);
       loginStatus = false;
     } else {
-      console.log(login.email); //test
+      // user is logged in
       const logoutText = createElement('Hi ' + login.email 
-          + '! Comment or <a href=\"' + login.url + '\">log out</a>.', 'p');
+          + '! Leave a comment or <a href=\"' + login.url + '\">log out</a>.', 'p');
       commentsDiv.appendChild(logoutText);
       loginStatus = true;
     }
@@ -115,7 +116,7 @@ function showCaption(element) {
  */
 function toggleCommentsForm(loginStatus) {
   let form = document.getElementById('comment-form');
-  if(loginStatus) {
+  if (loginStatus) {
     form.style.display = "block";
   } else {
     form.style.display = "none";
