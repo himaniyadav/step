@@ -14,8 +14,11 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import java.io.IOException;
@@ -32,11 +35,30 @@ public class DeleteCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the comment id to be deleted.
+    UserService userService = UserServiceFactory.getUserService();
+    String email = userService.getCurrentUser().getEmail();
+    
+    // Get the comment id and email to be deleted.
     long id = Long.parseLong(request.getParameter("id"));
+    String commentEmail = request.getParameter("email");
 
-    Key entityKey = KeyFactory.createKey("Comment", id);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.delete(entityKey);
+    // only delete comment if current user created the comment
+    if (commentEmail.equals(email)) {
+      Key entityKey = KeyFactory.createKey("Comment", id);
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.delete(entityKey);
+    }
+
+    String json = "{\"success\": ";
+    if (commentEmail.equals(email)) {
+      json += "\"true\"";
+    } else {
+      json += "\"false\"";
+    }
+    json += "}";
+
+    // send JSON response success/fail
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
   }
 }
