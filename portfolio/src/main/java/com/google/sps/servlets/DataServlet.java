@@ -16,6 +16,8 @@ package com.google.sps.servlets;
 
 import com.google.sps.data.Comment;
 import com.google.gson.Gson;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -56,10 +58,11 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable(options)) {
       String name = (String) entity.getProperty("name");
       String message = (String) entity.getProperty("message");
+      String email = (String) entity.getProperty("email");
       long timestamp = (long) entity.getProperty("timestamp");
       long id = entity.getKey().getId();
 
-      addComment(comments, name, message, timestamp, id);
+      addComment(comments, name, message, email, timestamp, id);
     }
 
     // Send the JSON as the response
@@ -69,15 +72,18 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
     // Get the input from the form.
     String name = request.getParameter("name");
     String message = request.getParameter("message");
     long timestamp = System.currentTimeMillis();
+    String email = userService.getCurrentUser().getEmail();
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("message", message);
     commentEntity.setProperty("timestamp", timestamp);
+    commentEntity.setProperty("email", email);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
@@ -124,8 +130,9 @@ public class DataServlet extends HttpServlet {
   /**
    * Adds a comment to a list of comments.
    */
-  private void addComment(List comments, String name, String message, long timestamp, long id) {
-    Comment comment = new Comment(name, message, timestamp, id);
+  private void addComment(List comments, String name, String message, String email, 
+                          long timestamp, long id) {
+    Comment comment = new Comment(name, message, email, timestamp, id);
     comments.add(comment);
   }
 

@@ -14,6 +14,7 @@
 
 const DELETE_ALL_COMMENTS_WARNING = 'Careful! Do you really want to delete all comments?';
 const DELETE_COMMENT_WARNING = 'Are you sure you want to delete this comment?';
+const DELETE_COMMENT_FAIL = `You can't delete a comment that's not yours!`;
 
 /*
  * JQuery to change header bar from transparent to solid on scroll.
@@ -80,6 +81,47 @@ function showCaption(element) {
   let caption = element.querySelector('span');
   caption.classList.toggle('show-caption');
   caption.focus();
+}
+
+/*
+ * Fetch the authentication status of the user from the server
+ */
+ function authStatus() {
+   let loginStatus = false;
+
+   fetch('/login')
+  .then(response => response.json())
+  .then((login) => {
+    const commentsDiv = document.getElementById('comments');
+
+    if (login.email === 'null') {
+      // user is logged out
+      const loginText = createElement('<a href=\"' + login.url 
+          + '\">Log in</a> to submit a comment.', 'p');
+      commentsDiv.appendChild(loginText);
+      loginStatus = false;
+    } else {
+      // user is logged in
+      const logoutText = createElement('Hi ' + login.email 
+          + '! Leave a comment or <a href=\"' + login.url + '\">log out</a>.', 'p');
+      commentsDiv.appendChild(logoutText);
+      loginStatus = true;
+    }
+
+    toggleCommentsForm(loginStatus);
+  });
+ }
+
+/* 
+ * Hide comments form if user is logged out, show if user is logged in.
+ */
+function toggleCommentsForm(loginStatus) {
+  let form = document.getElementById('comment-form');
+  if (loginStatus) {
+    form.style.display = "block";
+  } else {
+    form.style.display = "none";
+  }
 }
 
 /*
@@ -229,16 +271,24 @@ function deleteComment(comment) {
   if (window.confirm(DELETE_COMMENT_WARNING)) { 
     const params = new URLSearchParams();
     params.append('id', comment.id);
-    fetch('/delete-comment', {method: 'POST', body: params});
+    params.append('email', comment.email);
+    fetch('/delete-comment', {method: 'POST', body: params})
+    .then(response => response.json())
+    .then((status) => {
+      if (status.success === false) {
+        window.alert(DELETE_COMMENT_FAIL);
+      }
+    });
   }
 }
 
 /* Creates an element containing text. */
 function createElement(text, type) {
   const element = document.createElement(type);
-  element.innerText = text;
+  element.innerHTML = text;
   return element;
 }
 
-/* Run the getComments() function when the page loads. */
+/* Run the getComments() and authStatus() function when the page loads. */
 window.addEventListener('load', getComments);
+window.addEventListener('load', authStatus);
