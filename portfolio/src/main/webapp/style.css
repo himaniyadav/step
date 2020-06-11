@@ -624,7 +624,7 @@ select:focus {
   background: #fff;
   border-radius: 3px;
   box-shadow: 0 2px 6px rgba(0,0,0,.3);
-  font-family: Montserrat;
+  font-family: Roboto, sans-serif;
   margin: 10px;
   padding: 10px;
 }
@@ -632,7 +632,7 @@ select:focus {
 .map #legend h3 {
   cursor: auto;
   color: rgb(25,25,25);
-  font-family: Poppins;
+  font-family: Roboto, sans-serif;
   font-weight: normal;
   font-size: 16px;
   font-variant: normal;
@@ -643,6 +643,13 @@ select:focus {
 .map #legend img {
   vertical-align: middle;
   padding: 2px;
+}
+
+.map button {
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  padding: 0.25rem 0.25rem;
 }
 
 @media screen and (max-width: 800px) {
