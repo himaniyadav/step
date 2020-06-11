@@ -49,13 +49,7 @@ public class DeleteCommentServlet extends HttpServlet {
       datastore.delete(entityKey);
     }
 
-    String json = "{\"success\": ";
-    if (commentEmail.equals(email)) {
-      json += "\"true\"";
-    } else {
-      json += "\"false\"";
-    }
-    json += "}";
+    String json = String.format("{\"success\": %b}", commentEmail.equals(email));
 
     // send JSON response success/fail
     response.setContentType("application/json;");

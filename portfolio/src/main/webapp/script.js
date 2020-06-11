@@ -14,7 +14,7 @@
 
 const DELETE_ALL_COMMENTS_WARNING = 'Careful! Do you really want to delete all comments?';
 const DELETE_COMMENT_WARNING = 'Are you sure you want to delete this comment?';
-const DELETE_COMMENT_FAIL = 'You can\'t delete a comment that\'s not yours!';
+const DELETE_COMMENT_FAIL = `You can't delete a comment that's not yours!`;
 
 /*
  * JQuery to change header bar from transparent to solid on scroll.
@@ -92,8 +92,6 @@ function showCaption(element) {
    fetch('/login')
   .then(response => response.json())
   .then((login) => {
-    // login is a JSON object
-
     const commentsDiv = document.getElementById('comments');
 
     if (login.email === 'null') {
@@ -277,7 +275,7 @@ function deleteComment(comment) {
     fetch('/delete-comment', {method: 'POST', body: params})
     .then(response => response.json())
     .then((status) => {
-      if (status.success === 'false') {
+      if (status.success === false) {
         window.alert(DELETE_COMMENT_FAIL);
       }
     });

@@ -30,24 +30,17 @@ public class LoginServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-    String loginUrl = userService.createLoginURL("/");
-    String logoutUrl = userService.createLogoutURL("/");
+    String loginUrl = userService.createLoginURL("/#comments");
+    String logoutUrl = userService.createLogoutURL("/#comments");
 
-    String json = "{";
+    String json;
     if (userService.isUserLoggedIn()) {
-      json += "\"email\": ";
-      json += "\"" + userService.getCurrentUser().getEmail() + "\"";
-      json += ", ";
-      json += "\"url\": ";
-      json += "\"" + logoutUrl + "\"";
+      json = String.format("{\"email\": \"%s\", \"url\": \"%s\"}", 
+                          userService.getCurrentUser().getEmail(), logoutUrl);
     } else {
-      json += "\"email\": ";
-      json += "\"null\"";
-      json += ", ";
-      json += "\"url\": ";
-      json += "\"" + loginUrl + "\"";
+      json = String.format("{\"email\": \"%s\", \"url\": \"%s\"}", 
+                          "null", loginUrl);
     }
-    json += "}";
 
     // Send the JSON as the response
     response.setContentType("application/json;");
