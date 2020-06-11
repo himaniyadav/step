@@ -83,6 +83,46 @@ function showCaption(element) {
 }
 
 /*
+ * Fetch the authentication status of the user from the server
+ */
+ function authStatus() {
+   let loginStatus = false;
+
+   fetch('/login')
+  .then(response => response.json())
+  .then((login) => {
+    const commentsDiv = document.getElementById('comments');
+
+    if (login.email === 'null') {
+      const loginText = createElement('<a href=\"' + login.url 
+          + '\">Log in</a> to submit a comment.', 'p');
+      commentsDiv.appendChild(loginText);
+      loginStatus = false;
+    } else {
+      console.log(login.email); //test
+      const logoutText = createElement('Hi ' + login.email 
+          + '! Comment or <a href=\"' + login.url + '\">log out</a>.', 'p');
+      commentsDiv.appendChild(logoutText);
+      loginStatus = true;
+    }
+
+    toggleCommentsForm(loginStatus);
+  });
+ }
+
+/* 
+ * Hide comments form if user is logged out, show if user is logged in.
+ */
+function toggleCommentsForm(loginStatus) {
+  let form = document.getElementById('comment-form');
+  if(loginStatus) {
+    form.style.display = "block";
+  } else {
+    form.style.display = "none";
+  }
+}
+
+/*
  * Fetch comments data from the data servlet to display on main page.
  */
 let pageNumber = 0;
@@ -236,9 +276,10 @@ function deleteComment(comment) {
 /* Creates an element containing text. */
 function createElement(text, type) {
   const element = document.createElement(type);
-  element.innerText = text;
+  element.innerHTML = text;
   return element;
 }
 
-/* Run the getComments() function when the page loads. */
+/* Run the getComments() and authStatus() function when the page loads. */
 window.addEventListener('load', getComments);
+window.addEventListener('load', authStatus);
