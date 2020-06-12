@@ -41,7 +41,7 @@ public class DeleteMarkerServlet extends HttpServlet {
     long id = Long.parseLong(request.getParameter("id"));
     String markerEmail = request.getParameter("email");
 
-    // only delete marker if current user created the marker
+    // Only delete marker if current user created the marker.
     if (markerEmail.equals(email)) {
       Key entityKey = KeyFactory.createKey("Marker", id);
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -50,7 +50,7 @@ public class DeleteMarkerServlet extends HttpServlet {
 
     String json = String.format("{\"success\": %b}", markerEmail.equals(email));
 
-    // send JSON response success/fail
+    // Send JSON response, either success or failure.
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
