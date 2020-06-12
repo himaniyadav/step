@@ -30,16 +30,19 @@ public class LoginServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
 
-    String loginUrl = userService.createLoginURL("/#comments");
-    String logoutUrl = userService.createLogoutURL("/#comments");
+    String commentLoginUrl = userService.createLoginURL("/#comments");
+    String commentLogoutUrl = userService.createLogoutURL("/#comments");
+    
+    String mapLoginUrl = userService.createLoginURL("/gallery.html#map-container");
+    String mapLogoutUrl = userService.createLogoutURL("/gallery.html#map-container");
 
     String json;
     if (userService.isUserLoggedIn()) {
-      json = String.format("{\"email\": \"%s\", \"url\": \"%s\"}", 
-                          userService.getCurrentUser().getEmail(), logoutUrl);
+      json = String.format("{\"email\": \"%s\", \"url\": \"%s\", \"mapUrl\": \"%s\"}",
+                      userService.getCurrentUser().getEmail(), commentLogoutUrl, mapLogoutUrl);
     } else {
-      json = String.format("{\"email\": \"%s\", \"url\": \"%s\"}", 
-                          "null", loginUrl);
+      json = String.format("{\"email\": \"%s\", \"url\": \"%s\", \"mapUrl\": \"%s\"}", 
+                          "null", commentLoginUrl, mapLoginUrl);
     }
 
     // Send the JSON as the response

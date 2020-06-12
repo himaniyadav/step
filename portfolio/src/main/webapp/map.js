@@ -16,6 +16,7 @@
  * Display map when page loads.
  */
 window.addEventListener('load', createMap);
+window.addEventListener('load', mapAuth);
 
 const icons = {
   image: {
@@ -161,11 +162,6 @@ function createMap() {
       'My current team is based in Pittsburgh. I\'d love to visit Google PIT!'
   );
 
-  // When the user clicks in the map, allow user to create and edit a marker.
-  map.addListener('click', (event) => {
-    addEditMarker(event.latLng.lat(), event.latLng.lng());
-  });
-
   fetchMarkers();
 
   // Create and display legend of icons.
@@ -250,7 +246,10 @@ let editableMarker;
 /** 
  * Creates a marker that shows a textbox the user can edit. 
  */
-function addEditMarker(lat, lng) {
+function addEditMarker(event) {
+  let lat = event.latLng.lat();
+  let lng = event.latLng.lng();
+
   // If we're already showing an editable marker, then remove it.
   if (editableMarker) {
     editableMarker.setMap(null);
@@ -342,5 +341,46 @@ function deleteMarker(id) {
     const params = new URLSearchParams();
     params.append('id', id);
     fetch('/delete-marker', {method: 'POST', body: params});
+  }
+}
+
+/*
+ * Fetch the authentication status of the user from the server.
+ */
+function mapAuth() {
+  let loginStatus = false;
+
+  fetch('/login')
+  .then(response => response.json())
+  .then((login) => {
+    const mapDiv = document.getElementById('map-container');
+
+    if (login.email === 'null') {
+      // user is logged out
+      const loginText = createElement('<a href=\"' + login.mapUrl 
+          + '\">Log in</a> to add a marker.', 'p');
+      mapDiv.appendChild(loginText);
+      loginStatus = false;
+    } else {
+      // user is logged in
+      const logoutText = createElement('Hi ' + login.email 
+          + '! Add a marker or <a href=\"' + login.mapUrl + '\">log out</a>.', 'p');
+      mapDiv.appendChild(logoutText);
+      loginStatus = true;
+    }
+
+    toggleClickListener(loginStatus);
+  });
+}
+
+/* 
+ * Disable click event on map if logged out, enable if logged in.
+ */
+function toggleClickListener(loginStatus) {
+  if (loginStatus) {
+    // When the user clicks in the map, allow user to create and edit a marker
+    map.addListener('click', addEditMarker, false);
+  } else {
+    map.removeEventListener('click', addEditMarker, false)
   }
 }
