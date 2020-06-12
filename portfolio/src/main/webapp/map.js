@@ -34,6 +34,7 @@ const icons = {
 };
 
 const DELETE_MARKER_WARNING = 'Are you sure you want to delete this marker?';
+const DELETE_MARKER_FAIL = `You can't delete a marker that's not yours!`;
 
 let map;
 
@@ -218,7 +219,7 @@ function fetchMarkers() {
   .then((markers) => {
     // markers is an array of JSON objects
     markers.forEach((marker) => {
-        addUserMarker(marker.lat, marker.lng, marker.content, marker.id)
+        addUserMarker(marker.lat, marker.lng, marker.content, marker.id, marker.email);
     });
   });
 }
@@ -227,7 +228,7 @@ function fetchMarkers() {
  * Adds a marker that shows an info window.
  * Represents a user-submitted marker.
  */
-function addUserMarker(lat, lng, description, id) {
+function addUserMarker(lat, lng, description, id, email) {
   const marker = new google.maps.Marker({
     position: {lat: lat, lng: lng}, 
     map: map,
@@ -235,7 +236,7 @@ function addUserMarker(lat, lng, description, id) {
   });
 
   const infoWindow = new google.maps.InfoWindow(
-    {content: buildMarkerInfoWindow(marker, description, id)});
+    {content: buildMarkerInfoWindow(marker, description, id, email)});
   
   marker.addListener('click', () => {
     infoWindow.open(map, marker);
@@ -276,7 +277,7 @@ function addEditMarker(event) {
  * Builds HTML elements that show the marker description and a delete
  * button to go in the info window.
  */
-function buildMarkerInfoWindow(marker, description, id) {
+function buildMarkerInfoWindow(marker, description, id, email) {
   const text = document.createElement('span');
   text.innerText = description;
 
@@ -284,7 +285,7 @@ function buildMarkerInfoWindow(marker, description, id) {
   deleteButton.appendChild(document.createTextNode('Delete'));
 
   deleteButton.onclick = () => {
-    deleteMarker(id);
+    deleteMarker(id, email);
     marker.setMap(null);
   };
 
@@ -336,11 +337,18 @@ function postMarker(lat, lng, content) {
 /**
  * Tells the server to delete an individual marker. 
  */
-function deleteMarker(id) {
+function deleteMarker(id, email) {
   if (window.confirm(DELETE_MARKER_WARNING)) {
     const params = new URLSearchParams();
     params.append('id', id);
-    fetch('/delete-marker', {method: 'POST', body: params});
+    params.append('email', email);
+    fetch('/delete-marker', {method: 'POST', body: params})
+    .then(response => response.json())
+    .then((status) => {
+      if (status.success === false) {
+        window.alert(DELETE_MARKER_FAIL);
+      }
+    });
   }
 }
 

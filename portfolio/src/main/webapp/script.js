@@ -94,6 +94,7 @@ function showCaption(element) {
   .then((login) => {
     const commentsDiv = document.getElementById('comments');
 
+
     if (login.email === 'null') {
       // user is logged out
       const loginText = createElement('<a href=\"' + login.url 
