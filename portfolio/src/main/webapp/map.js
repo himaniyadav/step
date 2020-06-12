@@ -12,12 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
- * Display map when page loads.
- */
-window.addEventListener('load', createMap);
-window.addEventListener('load', mapAuth);
-
 const icons = {
   image: {
     name: 'Image Locations',
@@ -220,8 +214,6 @@ function fetchMarkers() {
     // markers is an array of JSON objects
     markers.forEach((marker) => {
         addUserMarker(marker.lat, marker.lng, marker.content, marker.id, marker.email);
-        //test
-        console.log(marker.id);
     });
   });
 }
@@ -353,35 +345,6 @@ function deleteMarker(marker, id, email) {
       }
     });
   }
-}
-
-/*
- * Fetch the authentication status of the user from the server.
- */
-function mapAuth() {
-  let loginStatus = false;
-
-  fetch('/login')
-  .then(response => response.json())
-  .then((login) => {
-    const mapDiv = document.getElementById('map-container');
-
-    if (login.email === 'null') {
-      // user is logged out
-      const loginText = createElement('<a href=\"' + login.mapUrl 
-          + '\">Log in</a> to add a marker.', 'p');
-      mapDiv.appendChild(loginText);
-      loginStatus = false;
-    } else {
-      // user is logged in
-      const logoutText = createElement('Hi ' + login.email 
-          + '! Add a marker or <a href=\"' + login.mapUrl + '\">log out</a>.', 'p');
-      mapDiv.appendChild(logoutText);
-      loginStatus = true;
-    }
-
-    toggleClickListener(loginStatus);
-  });
 }
 
 /* 
