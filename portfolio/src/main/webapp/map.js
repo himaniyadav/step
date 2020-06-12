@@ -220,6 +220,8 @@ function fetchMarkers() {
     // markers is an array of JSON objects
     markers.forEach((marker) => {
         addUserMarker(marker.lat, marker.lng, marker.content, marker.id, marker.email);
+        //test
+        console.log(marker.id);
     });
   });
 }
@@ -309,7 +311,7 @@ function buildInputInfoWindow(lat, lng) {
 
   submit.onclick = () => {
     postMarker(lat, lng, textBox.value);
-    addUserMarker(lat, lng, textBox.value);
+    fetchMarkers();
     editableMarker.setMap(null);
   };
 
