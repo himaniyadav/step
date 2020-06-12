@@ -285,8 +285,7 @@ function buildMarkerInfoWindow(marker, description, id, email) {
   deleteButton.appendChild(document.createTextNode('Delete'));
 
   deleteButton.onclick = () => {
-    deleteMarker(id, email);
-    marker.setMap(null);
+    deleteMarker(marker, id, email);
   };
 
   const containerDiv = document.createElement('div');
@@ -337,7 +336,7 @@ function postMarker(lat, lng, content) {
 /**
  * Tells the server to delete an individual marker. 
  */
-function deleteMarker(id, email) {
+function deleteMarker(marker, id, email) {
   if (window.confirm(DELETE_MARKER_WARNING)) {
     const params = new URLSearchParams();
     params.append('id', id);
@@ -347,6 +346,8 @@ function deleteMarker(id, email) {
     .then((status) => {
       if (status.success === false) {
         window.alert(DELETE_MARKER_FAIL);
+      } else {
+        marker.setMap(null);
       }
     });
   }
