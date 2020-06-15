@@ -29,21 +29,21 @@ public final class FindMeetingQuery {
     // Go through each event to eliminate times when people aren't available.
     for (Event event : events) {
       if (!Collections.disjoint(event.getAttendees(), request.getAttendees())) {
-      // If at least one attendee of the requested meeting is an attendee of an event:
+        // If at least one attendee of the requested meeting is an attendee of an event:
         TimeRange eventRange = event.getWhen();
 
         List<TimeRange> toRemove = new ArrayList<TimeRange>();
         List<TimeRange> toAdd = new ArrayList<TimeRange>();
         for (TimeRange range : availableTimes) {
           if (range.overlaps(eventRange)) {
-          // If the event overlaps with one of our currently "available" times:  
+            // If the event overlaps with one of our currently "available" times:  
             TimeRange newRange;
             int start;
             int end;
             
             if (range.contains(eventRange)) {
-            // Case 1: event is fully contained within current range
-            // Split up current TimeRange into two.
+              // Case 1: event is fully contained within current range
+              // Split up current TimeRange into two.
               start = range.start();
               end = eventRange.start();
               newRange = TimeRange.fromStartEnd(start, end, false);
@@ -54,15 +54,15 @@ public final class FindMeetingQuery {
               newRange = TimeRange.fromStartEnd(start, end, false);
               toAdd.add(newRange);
             } else if (eventRange.start() < range.start()) {
-            // Case 2: event starts earlier than current range
-            // Shift current TimeRange to start later.
+              // Case 2: event starts earlier than current range
+              // Shift current TimeRange to start later.
               start = eventRange.end();
               end = range.end();
               newRange = TimeRange.fromStartEnd(start, end, false);
               toAdd.add(newRange);
             } else if (eventRange.end() > range.end()) {
-            // Case 3: event ends later than current range
-            // Shift current TimeRange to end earlier.
+              // Case 3: event ends later than current range
+              // Shift current TimeRange to end earlier.
               start = range.start();
               end = eventRange.start();
               newRange = TimeRange.fromStartEnd(start, end, false);
