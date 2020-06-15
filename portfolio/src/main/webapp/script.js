@@ -140,7 +140,7 @@ function showCaption(element) {
 
     toggleCommentsForm(loginStatus);
     if (isMapPage) { 
-      toggleClickListener(loginStatus);
+      toggleMapClickListener(loginStatus);
     }
   });
  }

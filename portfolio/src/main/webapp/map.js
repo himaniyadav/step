@@ -303,7 +303,6 @@ function buildInputInfoWindow(lat, lng) {
 
   submit.onclick = () => {
     postMarker(lat, lng, textBox.value);
-    fetchMarkers();
     editableMarker.setMap(null);
   };
 
@@ -324,7 +323,8 @@ function postMarker(lat, lng, content) {
   params.append('lng', lng);
   params.append('content', content);
 
-  fetch('/markers', {method: 'POST', body: params});
+  fetch('/markers', {method: 'POST', body: params})
+  .then(fetchMarkers());
 }
 
 /**
@@ -350,7 +350,7 @@ function deleteMarker(marker, id, email) {
 /* 
  * Disable click event on map if logged out, enable if logged in.
  */
-function toggleClickListener(loginStatus) {
+function toggleMapClickListener(loginStatus) {
   if (loginStatus) {
     // When the user clicks in the map, allow user to create and edit a marker
     map.addListener('click', addEditMarker, false);
