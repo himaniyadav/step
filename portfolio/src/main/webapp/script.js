@@ -22,7 +22,7 @@
  */
 function loadPage() {
   const isMapPage = $('body.gallery-map-page').length > 0;
-  authenticateUser(isMapPage);
+  authenticateUser();
   getComments();
   if (isMapPage) {
     createMap();
@@ -99,51 +99,46 @@ function showCaption(element) {
 /*
  * Fetch the authentication status of the user from the server
  */
- function authenticateUser(isMapPage) {
-   let loginStatus = false;
-
+ function authenticateUser() {
    fetch('/login')
   .then(response => response.json())
   .then((login) => {
-    const commentsDiv = document.getElementById('comments');
-    const mapDiv = document.getElementById('map-container');
-    let loginText;
-    let logoutText;
-
-    if (login.email === 'null') {
-      // user is logged out
-      loginText = createElement('<a href=\"' + login.url 
-          + '\">Log in</a> to submit a comment.', 'p');
-      commentsDiv.appendChild(loginText);
-
-      if (isMapPage) {
-        loginText = createElement('<a href=\"' + login.mapUrl 
-          + '\">Log in</a> to add a marker.', 'p');
-        mapDiv.appendChild(loginText);
-      }
-
-      loginStatus = false;
-    } else {
-      // user is logged in
-      logoutText = createElement('Hi ' + login.email 
-        + '! Leave a comment or <a href=\"' + login.url + '\">log out</a>.', 'p');
-      commentsDiv.appendChild(logoutText);
-
-      if (isMapPage) { 
-        logoutText = createElement('Hi ' + login.email 
-          + '! Add a marker or <a href=\"' + login.mapUrl + '\">log out</a>.', 'p');
-        mapDiv.appendChild(logoutText);
-      }
-
-      loginStatus = true;
+    if (document.getElementsByClassName('comments').length > 0) {
+      addAuthText(login, 'comment', 'comments', 'url', toggleCommentsForm);
     }
-
-    toggleCommentsForm(loginStatus);
-    if (isMapPage) { 
-      toggleMapClickListener(loginStatus);
+    if (document.getElementsByClassName('map').length > 0) {
+      addAuthText(login, 'marker', 'map-container', 'mapUrl', toggleMapClickListener);
     }
   });
  }
+
+/** 
+ * Adds appropriate text and functionality depending on whether user is logged in or not. 
+ * @param {number} login A number to do something to.
+ * @param {number} arg A number to do something to.
+ */
+function addAuthText(login, type, sectionContainer, loginUrl, toggleFunction) {
+  const divElement = document.getElementById(sectionContainer);
+
+  let loginText;
+  let logoutText;
+
+  if (login.email === 'null') {
+    // user is logged out
+    loginText = createElement('<a href=\"' + login[loginUrl] 
+        + '\">Log in</a> to submit a ' + type + '.', 'p');
+    divElement.appendChild(loginText);
+    loginStatus = false;
+  } else {
+    // user is logged in
+    logoutText = createElement('Hi ' + login.email 
+      + '! Leave a ' + type + ' or <a href=\"' + login[loginUrl] + '\">log out</a>.', 'p');
+    divElement.appendChild(logoutText);
+    loginStatus = true;
+  }
+
+  toggleFunction(loginStatus);
+}
 
 /* Creates an element containing text. */
 function createElement(text, type) {
