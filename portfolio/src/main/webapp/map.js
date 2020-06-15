@@ -353,8 +353,8 @@ function deleteMarker(marker, id, email) {
 function toggleMapClickListener(loginStatus) {
   if (loginStatus) {
     // When the user clicks in the map, allow user to create and edit a marker
-    map.addListener('click', addEditMarker, false);
+    map.addListener('click', addEditMarker);
   } else {
-    map.removeEventListener('click', addEditMarker, false)
+    google.maps.event.clearListeners(map, 'click');
   }
 }
