@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
@@ -32,8 +34,8 @@ public final class FindMeetingQuery {
         // If at least one attendee of the requested meeting is an attendee of an event:
         TimeRange eventRange = event.getWhen();
 
-        List<TimeRange> toRemove = new ArrayList<TimeRange>();
-        List<TimeRange> toAdd = new ArrayList<TimeRange>();
+        Set<TimeRange> toRemove = new LinkedHashSet<TimeRange>();
+        Set<TimeRange> toAdd = new LinkedHashSet<TimeRange>();
         for (TimeRange range : availableTimes) {
           if (range.overlaps(eventRange)) {
             // If the event overlaps with one of our currently "available" times:  
