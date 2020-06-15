@@ -15,9 +15,67 @@
 package com.google.sps;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+    List<TimeRange> times = new ArrayList<>();
+    
+    times.add(TimeRange.WHOLE_DAY);
+
+    for (Event event : events) {
+      if (!Collections.disjoint(event.getAttendees(), request.getAttendees())) {
+        TimeRange eventRange = event.getWhen();
+
+        List<TimeRange> toRemove = new ArrayList<TimeRange>();
+        List<TimeRange> toAdd = new ArrayList<TimeRange>();
+        for (TimeRange range : times) {
+          if (range.overlaps(eventRange)) {
+            TimeRange newRange;
+            int start;
+            int end;
+            
+            if (range.contains(eventRange)) {
+            // Case 1: event is fully contained within current range
+            // Splits up current TimeRange into two.
+              start = range.start();
+              end = eventRange.start();
+              newRange = TimeRange.fromStartEnd(start, end, false);
+              toAdd.add(newRange);
+              
+              start = eventRange.end();
+              end = range.end();
+              newRange = TimeRange.fromStartEnd(start, end, false);
+              toAdd.add(newRange);
+            } else if (eventRange.start() < range.start()) {
+            // Case 2: event starts earlier than current range
+            // Shift current TimeRange to start later.
+              start = eventRange.end();
+              end = range.end();
+              newRange = TimeRange.fromStartEnd(start, end, false);
+              toAdd.add(newRange);
+            } else if (eventRange.end() > range.end()) {
+            // Case 3: event ends later than current range
+            // Shift current TimeRange to end earlier.
+              start = range.start();
+              end = eventRange.start();
+              newRange = TimeRange.fromStartEnd(start, end, false);
+              toAdd.add(newRange);
+            }
+            toRemove.add(range);
+          }
+        }
+        times.addAll(toAdd);
+        times.removeAll(toRemove);
+      }
+    }
+
+    // Go through all available times.
+    // If it is not long enough for the meeting, remove it as an option. 
+    times.removeIf((TimeRange range) -> range.duration() < request.getDuration());
+
+    return times;
   }
 }
