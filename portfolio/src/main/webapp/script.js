@@ -112,10 +112,8 @@ function showCaption(element) {
   });
  }
 
-/** 
+/*
  * Adds appropriate text and functionality depending on whether user is logged in or not. 
- * @param {number} login A number to do something to.
- * @param {number} arg A number to do something to.
  */
 function addAuthText(login, type, sectionContainer, loginUrl, toggleFunction) {
   const divElement = document.getElementById(sectionContainer);
