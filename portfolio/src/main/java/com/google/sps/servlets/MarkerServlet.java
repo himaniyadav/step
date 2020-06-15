@@ -16,6 +16,8 @@ package com.google.sps.servlets;
 
 import com.google.sps.data.Marker;
 import com.google.gson.Gson;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -51,14 +53,17 @@ public class MarkerServlet extends HttpServlet {
   /** Accepts a POST request containing a new marker. */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) {
+    UserService userService = UserServiceFactory.getUserService();
     double lat = Double.parseDouble(request.getParameter("lat"));
     double lng = Double.parseDouble(request.getParameter("lng"));
     String content = Jsoup.clean(request.getParameter("content"), Whitelist.none());
+    String email = userService.getCurrentUser().getEmail();
 
     Entity markerEntity = new Entity("Marker");
     markerEntity.setProperty("lat", lat);
     markerEntity.setProperty("lng", lng);
     markerEntity.setProperty("content", content);
+    markerEntity.setProperty("email", email);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(markerEntity);
@@ -77,8 +82,9 @@ public class MarkerServlet extends HttpServlet {
       double lng = (double) entity.getProperty("lng");
       String content = (String) entity.getProperty("content");
       long id = (long) entity.getKey().getId();
+      String email = (String) entity.getProperty("email");
 
-      Marker marker = new Marker(lat, lng, content, id);
+      Marker marker = new Marker(lat, lng, content, id, email);
       markers.add(marker);
     }
     return markers;

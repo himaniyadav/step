@@ -12,9 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const DELETE_ALL_COMMENTS_WARNING = 'Careful! Do you really want to delete all comments?';
-const DELETE_COMMENT_WARNING = 'Are you sure you want to delete this comment?';
-const DELETE_COMMENT_FAIL = `You can't delete a comment that's not yours!`;
+/*
+ * Initializes the page.
+ */
+ window.addEventListener('load', loadPage);
+
+/*
+ * Handles all functions to trigger when page loads.
+ */
+function loadPage() {
+  const isMapPage = $('body.gallery-map-page').length > 0;
+  authenticateUser();
+  getComments();
+  if (isMapPage) {
+    createMap();
+  }
+}
 
 /*
  * JQuery to change header bar from transparent to solid on scroll.
@@ -86,200 +99,43 @@ function showCaption(element) {
 /*
  * Fetch the authentication status of the user from the server
  */
- function authStatus() {
-   let loginStatus = false;
-
+ function authenticateUser() {
    fetch('/login')
   .then(response => response.json())
   .then((login) => {
-    const commentsDiv = document.getElementById('comments');
-
-    if (login.email === 'null') {
-      // user is logged out
-      const loginText = createElement('<a href=\"' + login.url 
-          + '\">Log in</a> to submit a comment.', 'p');
-      commentsDiv.appendChild(loginText);
-      loginStatus = false;
-    } else {
-      // user is logged in
-      const logoutText = createElement('Hi ' + login.email 
-          + '! Leave a comment or <a href=\"' + login.url + '\">log out</a>.', 'p');
-      commentsDiv.appendChild(logoutText);
-      loginStatus = true;
+    if (document.getElementsByClassName('comments').length > 0) {
+      addAuthText(login, 'comment', 'comments', 'url', toggleCommentsForm);
     }
-
-    toggleCommentsForm(loginStatus);
+    if (document.getElementsByClassName('map').length > 0) {
+      addAuthText(login, 'marker', 'map-container', 'mapUrl', toggleMapClickListener);
+    }
   });
  }
 
-/* 
- * Hide comments form if user is logged out, show if user is logged in.
+/*
+ * Adds appropriate text and functionality depending on whether user is logged in or not. 
  */
-function toggleCommentsForm(loginStatus) {
-  let form = document.getElementById('comment-form');
-  if (loginStatus) {
-    form.style.display = "block";
+function addAuthText(login, type, sectionContainer, loginUrl, toggleFunction) {
+  const divElement = document.getElementById(sectionContainer);
+
+  let loginText;
+  let logoutText;
+
+  if (login.email === 'null') {
+    // user is logged out
+    loginText = createElement('<a href=\"' + login[loginUrl] 
+        + '\">Log in</a> to submit a ' + type + '.', 'p');
+    divElement.appendChild(loginText);
+    loginStatus = false;
   } else {
-    form.style.display = "none";
+    // user is logged in
+    logoutText = createElement('Hi ' + login.email 
+      + '! Leave a ' + type + ' or <a href=\"' + login[loginUrl] + '\">log out</a>.', 'p');
+    divElement.appendChild(logoutText);
+    loginStatus = true;
   }
-}
 
-/*
- * Fetch comments data from the data servlet to display on main page.
- */
-let pageNumber = 0;
-let numResults = 0;
-let maxComments = 5;
-function getComments() {
-  checkFirstPage();
-
-  const maxCommentsSelect = document.getElementById('max-comments');
-  maxComments = maxCommentsSelect.value;
-
-  fetch('/data?max-comments=' + maxComments + '&page-num=' + pageNumber)
-  .then(response => response.json())
-  .then((comments) => {
-    // comments is an array of json objects
-    numResults = Object.keys(comments).length;
-    
-    // clear the comments container before displaying new results
-    const commentsElement = document.getElementById('comments-container');
-    commentsElement.innerHTML = '';
-
-    checkLastPage();
-
-    if (numResults === 0) {
-      if (pageNumber === 0) {
-        commentsElement.appendChild(
-            createElement('Be the first to leave a comment.', 'p'));
-      } else {
-         commentsElement.appendChild(createElement('No more comments.', 'p'));
-      }
-    } else {
-      comments.forEach((comment) => {
-        commentsElement.appendChild(createCommentElement(comment));
-      });
-    }
-  });
-}
-
-/* 
- * Creates an element that represents a comment and its delete button.
- */
-function createCommentElement(comment) {
-  const divElem = createElement('', 'div');
-  divElem.className = 'comment';
-
-  divElem.appendChild(createElement(`${comment.name}`.toLowerCase(), 'h3'));
-
-  const date = new Date(comment.timestamp);
-  divElem.appendChild(createElement(`${date.toDateString()}`, 'h4'))
-
-  divElem.appendChild(createElement(`${comment.message}`, 'p'));
-
-  const deleteButtonElement = document.createElement('button');
-  deleteButtonElement.innerText = 'Delete';
-  deleteButtonElement.addEventListener('click', () => {
-    deleteComment(comment);
-    // Reload so the comment is removed from the DOM and the same number 
-    // of comments is displayed.
-    getComments(); 
-  });
-
-  divElem.appendChild(deleteButtonElement);
-
-  return divElem;
-}
-
-/*
- * Navigates user to previous page of comments. 
- */
-function previousPage() {
-  if (pageNumber > 0) {
-    pageNumber--;
-  }
-  getComments();
-}
-
-/*
- * Navigates user to next page of comments. 
- */
-function nextPage() {
-  pageNumber++;
-  getComments();
-}
-
-/*
- * Disables button if user is on the first page of comments. 
- */
-function checkFirstPage() {
-  let previous = document.getElementById("previous");
-  if (pageNumber === 0) {
-    previous.disabled = true;
-  } else {
-    previous.disabled = false;
-  }
-}
-
-/*
- * Disables button if user is on the last page of comments. 
- */
-function checkLastPage() {
-  let next = document.getElementById("next");
-  if (numResults < maxComments) {
-    next.disabled = true;
-  } else {
-    next.disabled = false;
-  }
-}
-
-/*
- * Tells the server to add a comment. 
- */
-function addComment() {
-  const name = document.getElementById('name').value;
-  const message = document.getElementById('message').value;
-
-  // only submit the comment if message contains a value
-  if (message !== '') {
-    const params = new URLSearchParams();
-    params.append('name', name);
-    params.append('message', message);
-    fetch('/data', {method: 'POST', body: params})
-    .then((ignore) => {
-      getComments();
-      // clear form text
-      document.getElementById('comment-form').reset();
-    });
-  }
-}
-
-/*
- * Delete all comment data and clear main page.
- */
-function deleteAllComments() {
-  if (window.confirm(DELETE_ALL_COMMENTS_WARNING)) {
-    fetch('/delete-data', {method: 'POST'})
-    .then(getComments());
-  }  
-}
-
-/*
- * Tells the server to delete an individual comment. 
- */
-function deleteComment(comment) {
-  if (window.confirm(DELETE_COMMENT_WARNING)) { 
-    const params = new URLSearchParams();
-    params.append('id', comment.id);
-    params.append('email', comment.email);
-    fetch('/delete-comment', {method: 'POST', body: params})
-    .then(response => response.json())
-    .then((status) => {
-      if (status.success === false) {
-        window.alert(DELETE_COMMENT_FAIL);
-      }
-    });
-  }
+  toggleFunction(loginStatus);
 }
 
 /* Creates an element containing text. */
@@ -288,7 +144,3 @@ function createElement(text, type) {
   element.innerHTML = text;
   return element;
 }
-
-/* Run the getComments() and authStatus() function when the page loads. */
-window.addEventListener('load', getComments);
-window.addEventListener('load', authStatus);

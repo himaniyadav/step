@@ -12,11 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
- * Display map when page loads.
- */
-window.addEventListener('load', createMap);
-
 const icons = {
   image: {
     name: 'Image Locations',
@@ -33,6 +28,7 @@ const icons = {
 };
 
 const DELETE_MARKER_WARNING = 'Are you sure you want to delete this marker?';
+const DELETE_MARKER_FAIL = `You can't delete a marker that's not yours!`;
 
 let map;
 
@@ -161,11 +157,6 @@ function createMap() {
       'My current team is based in Pittsburgh. I\'d love to visit Google PIT!'
   );
 
-  // When the user clicks in the map, allow user to create and edit a marker.
-  map.addListener('click', (event) => {
-    addEditMarker(event.latLng.lat(), event.latLng.lng());
-  });
-
   fetchMarkers();
 
   // Create and display legend of icons.
@@ -222,7 +213,7 @@ function fetchMarkers() {
   .then((markers) => {
     // markers is an array of JSON objects
     markers.forEach((marker) => {
-        addUserMarker(marker.lat, marker.lng, marker.content, marker.id)
+        addUserMarker(marker.lat, marker.lng, marker.content, marker.id, marker.email);
     });
   });
 }
@@ -231,7 +222,7 @@ function fetchMarkers() {
  * Adds a marker that shows an info window.
  * Represents a user-submitted marker.
  */
-function addUserMarker(lat, lng, description, id) {
+function addUserMarker(lat, lng, description, id, email) {
   const marker = new google.maps.Marker({
     position: {lat: lat, lng: lng}, 
     map: map,
@@ -239,7 +230,7 @@ function addUserMarker(lat, lng, description, id) {
   });
 
   const infoWindow = new google.maps.InfoWindow(
-    {content: buildMarkerInfoWindow(marker, description, id)});
+    {content: buildMarkerInfoWindow(marker, description, id, email)});
   
   marker.addListener('click', () => {
     infoWindow.open(map, marker);
@@ -250,7 +241,10 @@ let editableMarker;
 /** 
  * Creates a marker that shows a textbox the user can edit. 
  */
-function addEditMarker(lat, lng) {
+function addEditMarker(event) {
+  let lat = event.latLng.lat();
+  let lng = event.latLng.lng();
+
   // If we're already showing an editable marker, then remove it.
   if (editableMarker) {
     editableMarker.setMap(null);
@@ -277,7 +271,7 @@ function addEditMarker(lat, lng) {
  * Builds HTML elements that show the marker description and a delete
  * button to go in the info window.
  */
-function buildMarkerInfoWindow(marker, description, id) {
+function buildMarkerInfoWindow(marker, description, id, email) {
   const text = document.createElement('span');
   text.innerText = description;
 
@@ -285,8 +279,7 @@ function buildMarkerInfoWindow(marker, description, id) {
   deleteButton.appendChild(document.createTextNode('Delete'));
 
   deleteButton.onclick = () => {
-    deleteMarker(id);
-    marker.setMap(null);
+    deleteMarker(marker, id, email);
   };
 
   const containerDiv = document.createElement('div');
@@ -310,7 +303,6 @@ function buildInputInfoWindow(lat, lng) {
 
   submit.onclick = () => {
     postMarker(lat, lng, textBox.value);
-    addUserMarker(lat, lng, textBox.value);
     editableMarker.setMap(null);
   };
 
@@ -331,16 +323,38 @@ function postMarker(lat, lng, content) {
   params.append('lng', lng);
   params.append('content', content);
 
-  fetch('/markers', {method: 'POST', body: params});
+  fetch('/markers', {method: 'POST', body: params})
+  .then(fetchMarkers());
 }
 
 /**
  * Tells the server to delete an individual marker. 
  */
-function deleteMarker(id) {
+function deleteMarker(marker, id, email) {
   if (window.confirm(DELETE_MARKER_WARNING)) {
     const params = new URLSearchParams();
     params.append('id', id);
-    fetch('/delete-marker', {method: 'POST', body: params});
+    params.append('email', email);
+    fetch('/delete-marker', {method: 'POST', body: params})
+    .then(response => response.json())
+    .then((status) => {
+      if (status.success === false) {
+        window.alert(DELETE_MARKER_FAIL);
+      } else {
+        marker.setMap(null);
+      }
+    });
+  }
+}
+
+/* 
+ * Disable click event on map if logged out, enable if logged in.
+ */
+function toggleMapClickListener(loginStatus) {
+  if (loginStatus) {
+    // When the user clicks in the map, allow user to create and edit a marker
+    map.addListener('click', addEditMarker);
+  } else {
+    google.maps.event.clearListeners(map, 'click');
   }
 }

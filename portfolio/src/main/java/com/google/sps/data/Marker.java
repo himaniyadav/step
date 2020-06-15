@@ -21,12 +21,14 @@ public class Marker {
   private final double lng;
   private final String content;
   private final long id;
+  private final String email;
 
-  public Marker(double lat, double lng, String content, long id) {
+  public Marker(double lat, double lng, String content, long id, String email) {
     this.lat = lat;
     this.lng = lng;
     this.content = content;
     this.id = id;
+    this.email = email;
   }
 
   public double getLat() {
@@ -43,5 +45,9 @@ public class Marker {
 
   public long getId() {
     return id;
+  }
+
+  public String getEmail() {
+    return email;
   }
 }

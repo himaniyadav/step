@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
@@ -32,11 +34,24 @@ public class DeleteMarkerServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the marker id to be deleted.
+    UserService userService = UserServiceFactory.getUserService();
+    String email = userService.getCurrentUser().getEmail();
+    
+    // Get the marker id and email to be deleted.
     long id = Long.parseLong(request.getParameter("id"));
+    String markerEmail = request.getParameter("email");
 
-    Key entityKey = KeyFactory.createKey("Marker", id);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.delete(entityKey);
+    // Only delete marker if current user created the marker.
+    if (markerEmail.equals(email)) {
+      Key entityKey = KeyFactory.createKey("Marker", id);
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.delete(entityKey);
+    }
+
+    String json = String.format("{\"success\": %b}", markerEmail.equals(email));
+
+    // Send JSON response, either success or failure.
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
   }
 }
