@@ -53,15 +53,18 @@ public final class FindMeetingQuery {
               end = range.end();
               newRange = TimeRange.fromStartEnd(start, end, false);
               toAdd.add(newRange);
+            } else if (eventRange.contains(range)) {
+              // Case 2: event spans the whole TimeRange
+              // Do nothing, besides deleting current TimeRange.
             } else if (eventRange.start() < range.start()) {
-              // Case 2: event starts earlier than current range
+              // Case 3: event starts earlier than current range
               // Shift current TimeRange to start later.
               start = eventRange.end();
               end = range.end();
               newRange = TimeRange.fromStartEnd(start, end, false);
               toAdd.add(newRange);
             } else if (eventRange.end() > range.end()) {
-              // Case 3: event ends later than current range
+              // Case 4: event ends later than current range
               // Shift current TimeRange to end earlier.
               start = range.start();
               end = eventRange.start();
@@ -76,8 +79,7 @@ public final class FindMeetingQuery {
       }
     }
 
-    // Go through all available times.
-    // If it is not long enough for the meeting, remove it as an option. 
+    // If a time is not long enough for the meeting, remove it as an option. 
     availableTimes.removeIf((TimeRange range) -> (range.duration() < request.getDuration()));
 
     return availableTimes;
