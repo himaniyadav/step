@@ -38,7 +38,9 @@ public final class MeetingRequest {
   public MeetingRequest(Collection<String> attendees, Collection<String> optionals, long duration) {
     this.duration = duration;
     this.attendees.addAll(attendees);
-    this.optional_attendees.addAll(optionals);
+    for (String optional_attendee : optionals) {
+      addOptionalAttendee(optional_attendee);
+    }
   }
 
   /**
