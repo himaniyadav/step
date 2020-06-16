@@ -34,50 +34,16 @@ public final class FindMeetingQuery {
         // If at least one attendee of the requested meeting is an attendee of an event:
         TimeRange eventRange = event.getWhen();
 
-        Set<TimeRange> toRemove = new LinkedHashSet<TimeRange>();
-        Set<TimeRange> toAdd = new LinkedHashSet<TimeRange>();
-        for (TimeRange range : availableTimes) {
-          if (range.overlaps(eventRange)) {
-            // If the event overlaps with one of our currently "available" times:  
-            TimeRange newRange;
-            int start;
-            int end;
-            
-            if (range.contains(eventRange)) {
-              // Case 1: event is fully contained within current range
-              // Split up current TimeRange into two.
-              start = range.start();
-              end = eventRange.start();
-              newRange = TimeRange.fromStartEnd(start, end, false);
-              toAdd.add(newRange);
-              
-              start = eventRange.end();
-              end = range.end();
-              newRange = TimeRange.fromStartEnd(start, end, false);
-              toAdd.add(newRange);
-            } else if (eventRange.contains(range)) {
-              // Case 2: event spans the whole TimeRange
-              // Do nothing, besides deleting current TimeRange.
-            } else if (eventRange.start() < range.start()) {
-              // Case 3: event starts earlier than current range
-              // Shift current TimeRange to start later.
-              start = eventRange.end();
-              end = range.end();
-              newRange = TimeRange.fromStartEnd(start, end, false);
-              toAdd.add(newRange);
-            } else if (eventRange.end() > range.end()) {
-              // Case 4: event ends later than current range
-              // Shift current TimeRange to end earlier.
-              start = range.start();
-              end = eventRange.start();
-              newRange = TimeRange.fromStartEnd(start, end, false);
-              toAdd.add(newRange);
-            }
-            toRemove.add(range);
+        Set<TimeRange> newAvailableRanges = new LinkedHashSet<TimeRange>();
+        Set<TimeRange> conflictingRanges = new LinkedHashSet<TimeRange>();
+        for (TimeRange availableTime : availableTimes) {
+          if (availableTime.overlaps(eventRange)) {
+            conflictingRanges.add(availableTime);
+            splitUpTimeRange(availableTime, eventRange, newAvailableRanges);
           }
         }
-        availableTimes.addAll(toAdd);
-        availableTimes.removeAll(toRemove);
+        availableTimes.addAll(newAvailableRanges);
+        availableTimes.removeAll(conflictingRanges);
       }
     }
 
@@ -85,5 +51,46 @@ public final class FindMeetingQuery {
     availableTimes.removeIf((TimeRange range) -> (range.duration() < request.getDuration()));
 
     return availableTimes;
+  }
+
+  /** 
+   * Handles splitting up an available {@code TimeRange} given a conflicting event's 
+   * {@code TimeRange}, into new available ranges.
+   */
+  private void splitUpTimeRange(TimeRange availableTime, 
+                                TimeRange eventRange, 
+                                Set<TimeRange> newAvailableRanges) {
+    int start;
+    int end;
+            
+    if (availableTime.contains(eventRange)) {
+      start = availableTime.start();
+      end = eventRange.start();
+      addTimeRangeToList(newAvailableRanges, start, end, false);
+
+      start = eventRange.end();
+      end = availableTime.end();
+      addTimeRangeToList(newAvailableRanges, start, end, false);
+    } else if (eventRange.contains(availableTime)) {
+      // If an event spans the whole available time, no new range will be available.
+    } else if (eventRange.start() < availableTime.start()) {
+      start = eventRange.end();
+      end = availableTime.end();
+      addTimeRangeToList(newAvailableRanges, start, end, false);
+    } else if (eventRange.end() > availableTime.end()) {
+      start = availableTime.start();
+      end = eventRange.start();
+      addTimeRangeToList(newAvailableRanges, start, end, false);
+    }
+  }
+
+  /** 
+   * Creates and adds a {@code TimeRange} to a collection, starting at {@code start} 
+   * and ending at {@code end}. 
+   */
+  private void addTimeRangeToList(Collection<TimeRange> collection, int start, int end, 
+                                  boolean inclusive) {
+    TimeRange range = TimeRange.fromStartEnd(start, end, inclusive);
+    collection.add(range);
   }
 }
