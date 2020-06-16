@@ -394,17 +394,17 @@ public final class FindMeetingQueryTest {
   @Test
   public void noTimesWithOptionalOnly() {
     // Have each optional attendee have different events with no gap.
-    // No time should be available. (WHY???)
+    // The whole day should be available.
     //
     // Events  :       
     // Optional: |------A------||------B------|
     // Day     : |----------------------------|
-    // Options : 
+    // Options : |----------------------------|
 
     Collection<Event> events = Arrays.asList(
-        new Event("Event 1", TimeRange.fromStartDuration(TIME_0800AM, DURATION_30_MINUTES),
+        new Event("Event 1", TimeRange.fromStartDuration(TimeRange.START_OF_DAY, TIME_0830AM),
             Arrays.asList(PERSON_A)),
-        new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
+        new Event("Event 2", TimeRange.fromStartDuration(TIME_0830AM, TimeRange.END_OF_DAY),
             Arrays.asList(PERSON_B)));
 
     MeetingRequest request =
@@ -412,7 +412,7 @@ public final class FindMeetingQueryTest {
             DURATION_30_MINUTES);
 
     Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected = Arrays.asList();
+    Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
 
     Assert.assertEquals(expected, actual);
   }
