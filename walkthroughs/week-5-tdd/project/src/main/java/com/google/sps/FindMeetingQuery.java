@@ -25,12 +25,39 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> availableTimes = new ArrayList<>();
     
+    // The basic functionality of optional attendees is that if one or more time slots exists so 
+    // that both mandatory and optional attendees can attend, return those time slots.  
+    // Otherwise, return the time slots that fit just the mandatory attendees.
+    if (!request.getOptionalAttendees().isEmpty()) {
+      handleQuery(events, request, availableTimes, true);
+      if (availableTimes.isEmpty()) {
+        handleQuery(events, request, availableTimes, false);
+      }
+    } else {
+      handleQuery(events, request, availableTimes, false);
+    }
+
+    return availableTimes;
+  }
+
+  /** 
+   * Helper function for {@code query()} which handles the logic of finding times.
+   * {@code includeOptional} flag determines whether or not to consider optional attendees.
+   */
+  public void handleQuery(Collection<Event> events, MeetingRequest request, 
+                          List<TimeRange> availableTimes,  boolean includeOptional) {
     // At first, the whole day is available for meetings.
     availableTimes.add(TimeRange.WHOLE_DAY);
 
+    Collection<String> requestedAttendees = new ArrayList<String>();
+    requestedAttendees.addAll(request.getAttendees());
+    if (includeOptional) {
+      requestedAttendees.addAll(request.getOptionalAttendees());
+    }
+
     // Go through each event to eliminate times when people aren't available.
     for (Event event : events) {
-      if (!Collections.disjoint(event.getAttendees(), request.getAttendees())) {
+      if (!Collections.disjoint(event.getAttendees(), requestedAttendees)) {
         // If at least one attendee of the requested meeting is an attendee of an event:
         TimeRange eventRange = event.getWhen();
 
@@ -49,8 +76,6 @@ public final class FindMeetingQuery {
 
     // If a time is not long enough for the meeting, remove it as an option. 
     availableTimes.removeIf((TimeRange range) -> (range.duration() < request.getDuration()));
-
-    return availableTimes;
   }
 
   /** 
