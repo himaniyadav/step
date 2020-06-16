@@ -25,9 +25,6 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> availableTimes = new ArrayList<>();
     
-    // The basic functionality of optional attendees is that if one or more time slots exists so 
-    // that both mandatory and optional attendees can attend, return those time slots.  
-    // Otherwise, return the time slots that fit just the mandatory attendees.
     if (!request.getOptionalAttendees().isEmpty()) {
       handleQuery(events, request, availableTimes, true);
       if (availableTimes.isEmpty()) {
