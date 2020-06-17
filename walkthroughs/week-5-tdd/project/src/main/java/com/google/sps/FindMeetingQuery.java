@@ -25,13 +25,16 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     List<TimeRange> availableTimes = new ArrayList<>();
     
+    // First we try to find a meeting time that works for all attendees, including optional.
     if (!request.getOptionalAttendees().isEmpty()) {
-      handleQuery(events, request, availableTimes, true);
+      handleQuery(events, request, availableTimes, /* includeOptional= */ true);
+      
+      // If nothing is available, try again, excluding optional attendees.
       if (availableTimes.isEmpty()) {
-        handleQuery(events, request, availableTimes, false);
+        handleQuery(events, request, availableTimes, /* includeOptional= */ false);
       }
     } else {
-      handleQuery(events, request, availableTimes, false);
+      handleQuery(events, request, availableTimes, /* includeOptional= */ false);
     }
 
     return availableTimes;
@@ -88,21 +91,21 @@ public final class FindMeetingQuery {
     if (availableTime.contains(eventRange)) {
       start = availableTime.start();
       end = eventRange.start();
-      addTimeRangeToList(newAvailableRanges, start, end, false);
+      addTimeRangeToList(newAvailableRanges, start, end, /* inclusive= */ false);
 
       start = eventRange.end();
       end = availableTime.end();
-      addTimeRangeToList(newAvailableRanges, start, end, false);
+      addTimeRangeToList(newAvailableRanges, start, end, /* inclusive= */ false);
     } else if (eventRange.contains(availableTime)) {
       // If an event spans the whole available time, no new range will be available.
     } else if (eventRange.start() < availableTime.start()) {
       start = eventRange.end();
       end = availableTime.end();
-      addTimeRangeToList(newAvailableRanges, start, end, false);
+      addTimeRangeToList(newAvailableRanges, start, end, /* inclusive= */ false);
     } else if (eventRange.end() > availableTime.end()) {
       start = availableTime.start();
       end = eventRange.start();
-      addTimeRangeToList(newAvailableRanges, start, end, false);
+      addTimeRangeToList(newAvailableRanges, start, end, /* inclusive= */ false);
     }
   }
 
